@@ -1,0 +1,125 @@
+h1.header {
+  text-align: center;
+  color:crimson;
+  border: 3px solid darkgrey;
+  margin-top: -0.05cm;
+}
+
+div.searchbox {
+  position: absolute;
+  right: 10px;
+}
+
+div.searchtab {
+  position: fixed;
+  background-color: white;
+  top: 140px;
+  left: 10px;
+  width: 220px;
+}
+
+div.slides {
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+
+div.description {
+  text-align: center;
+}
+
+/* Toggle switch: borrowed from w3 schook(http://www.w3schools.com/howto/howto_css_switch.asp)*/
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  display:none;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.footer {
+  position: fixed;
+  background-color: darkgrey;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+}
+
+/** search.php **/
+.searchresults {
+  text-align: center;
+  margin-top: 2cm;
+}
+
+/** project_pg.php **/
+.media_buttons {
+  text-align: center;
+  margin-top: 2cm;
+  margin-bottom: 1cm;
+}
+
+.project_pic {
+  text-align: center;
+}
+
+.project_description {
+  text-align: center;
+}
+
+.recommendations {
+  text-align: center;
+}
