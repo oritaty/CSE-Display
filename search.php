@@ -1,4 +1,4 @@
-<?php require_once('project.php'); ;?>
+<?php require_once('project.php'); ?>
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8"/>
@@ -13,7 +13,7 @@
     <h1 class="header">CSE Display Project</h1>
   </div>
   <div class="searchbox">
-    <form method="post" action="/search.php">
+    <form method="post" action="/prototype/search.php">
       Search:
       <input type="text" name="searchterm">
       <input type="submit" value="Submit">
@@ -48,8 +48,8 @@
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Person</h4>
     <I>Name:</I>
     <select name="person">
-      <option>Donald Trump</option>
       <option>Barack Obama</option>
+      <option>Donald Trump</option>
       <option>George Bush</option>
     </select>
     <hr>
@@ -74,13 +74,7 @@
     <!--<a href='index.php?hello=true'>Run PHP Function</a>Test-->
     <h2><b><l>Search Result: </l></b></h2>
     <?php
-    if (isset($_GET['hello'])) {
-      echo 'I just ran a php function';
-      $currentTarget->incrementCnt();
-    }
-    //echo $projects[2]->getAccessCount();
-    ?>
-    <?php
+    /*
     if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
         $key = filter_input(INPUT_POST, 'searchterm');
         for ($i = 0; $i<count($projects); $i++) {
@@ -94,6 +88,34 @@
                 echo "<a href=",'"search.php?hello=true"', ">[=> Go see the details.]</a><br><br><br>";
             }
         }
+    }*/
+    if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
+        $key = filter_input(INPUT_POST, 'searchterm');
+        $servername = 'localhost';
+        $username = 'root';
+        $password = '';
+        $dbname = 'testdb';
+        
+        //Create connection.
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        $sql = "SELECT * FROM project";
+        $result = $conn->query($sql);
+        
+	while($row = $result->fetch_assoc()) {
+            if (stristr($row['name'], $key)) {
+                echo '<img src="', $row['pic_url'], '" alt="', $row['pic_url'],
+                        '"style="width:180px;height:130px" /><br>';
+                echo "Name: ", $row['name'], "<br>";
+                echo "Start date: ", $row['start_date'], "<br>";
+                echo "Description: ", $row['description'], "<br>";
+                echo "Total access: ", $row['access_cnt'], "<br>";
+                //echo "<a href=",'"/prototype/project_pg.php?hello="', $row['name'], "[=> Go see the details.]</a><br><br><br>";
+                echo "<form action=", '"/prototype/project_pg.php"', "method=", '"post"', ">
+                        <button type=", '"submit"', "name=", '"hello"', "value=", $row['project_id'], 
+                        " class=", '"btn-link"', ">Go see the details</button></form><br><br>";
+            }
+        }
+        $conn->close();
     }
     ?>
   </div>
