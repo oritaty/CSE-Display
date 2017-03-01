@@ -1,4 +1,23 @@
 <?php require_once('project.php'); ?>
+<?php
+$proj = NULL;
+if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello') != '') {
+    $id = filter_input(INPUT_POST, 'hello');
+    $servername = 'localhost';
+    $username = 'root';
+    $password = '';
+    $dbname = 'testdb';
+        
+    //Create connection.
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    $sql0 = "UPDATE project SET access_cnt = access_cnt + 1 WHERE project_id = ". $id;
+    $conn->query($sql0);
+    $sql = "SELECT * FROM project WHERE project_id = ". $id;
+    $result = $conn->query($sql);
+    $proj = $result->fetch_assoc();
+    $conn->close();
+}
+?>
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8"/>
@@ -13,7 +32,7 @@
     <h1 class="header">CSE Display Project</h1>
   </div>
   <div class="searchbox">
-    <form method="post" action="/search.php">
+    <form method="post" action="/prototype/search.php">
       Search:
       <input type="text" name="searchterm">
       <input type="submit" value="Submit">
@@ -48,8 +67,8 @@
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Person</h4>
     <I>Name:</I>
     <select name="person">
-      <option>Donald Trump</option>
       <option>Barack Obama</option>
+      <option>Donald Trump</option>
       <option>George Bush</option>
     </select>
     <hr>
@@ -79,16 +98,20 @@
   </div>
   <div class="project_pic">
     <?php
-    echo '<img src="', $currentTarget->getPicURL(), '" alt="', $currentTarget->getPicURL(), '" /><br>';
+    if ($proj != NULL) {
+        echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>';
+    }
     ?>
   </div>
   <div class="project_description">
     <h2><b>Metadata: </b></h2>
     <?php
-    echo 'Name: ', $currentTarget->getProjectName(), '<br>';
-    echo 'Start date: ', $currentTarget->getStartDate(), '<br>';
-    echo 'Description: ', $currentTarget->getProjectDescription(), '<br>';
-    echo 'Total access: ', $currentTarget->getAccessCount(), '<br>';
+    if ($proj != NULL) {
+        echo 'Name: ', $proj['name'], '<br>';
+        echo 'Start date: ', $proj['start_date'], '<br>';
+        echo 'Description: ', $proj['description'], '<br>';
+        echo 'Total access: ', $proj['access_cnt'], '<br>';
+    }
     ?>
   </div>
   <div class="recommendations">
