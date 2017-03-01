@@ -1,4 +1,21 @@
 <?php require_once('project.php'); ?>
+<?php
+$id = filter_input(INPUT_POST, 'hello');
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$dbname = 'testdb';
+        
+//Create connection.
+$conn = new mysqli($servername, $username, $password, $dbname);
+$sql0 = "SELECT * FROM project WHERE access_cnt = (SELECT max(access_cnt) FROM project)";
+$sql = "SELECT * FROM project WHERE start_date = (SELECT max(start_date) FROM project)";
+$result0 = $conn->query($sql0);
+$result = $conn->query($sql);
+$most_popular = $result0->fetch_assoc();
+$latest = $result->fetch_assoc();
+$conn->close();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +29,7 @@
     <h1 class="header">CSE Display Project</h1>
   </div>
   <div class="searchbox">
-    <form method="post" action="/search.php">
+    <form method="post" action="/prototype/search.php">
       Search:
       <input type="text" name="searchterm">
       <input type="submit" value="Submit">
@@ -52,8 +69,8 @@
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Person</h4>
     <I>Name:</I>
     <select name="person">
-      <option>Donald Trump</option>
       <option>Barack Obama</option>
+      <option>Donald Trump</option>
       <option>George Bush</option>
     </select>
     <hr>
@@ -76,18 +93,21 @@
   </div>
   <div class="slides">
     <?php
-      echo '<img src="', $currentTarget->getPicURL(), '" alt="', $currentTarget->getPicURL(), '" /><br>';
+      echo '<img src="', $most_popular['pic_url'], '" alt="', $most_popular['pic_url'], '" /><br>';
     ?>
   </div>
   <div class="description">
     <h2>Description.</h2>
     <?php
-      echo 'Name: ', $currentTarget->getProjectName(), '<br>';
-      echo 'Start date: ', $currentTarget->getStartDate(), '<br>';
-      echo 'Description: ', $currentTarget->getProjectDescription(), '<br>';
-      echo 'Total access: ', $currentTarget->getAccessCount(), '<br>';
+      echo 'Name: ', $most_popular['name'], '<br>';
+      echo 'Start date: ', $most_popular['start_date'], '<br>';
+      echo 'Description: ', $most_popular['description'], '<br>';
+      echo 'Total access: ', $most_popular['access_cnt'], '<br>';
+      echo "<form action=", '"/prototype/project_pg.php"', "method=", '"post"', ">
+                        <button type=", '"submit"', "name=", '"hello"', "value=", $most_popular['project_id'], 
+                        " class=", '"btn-link"', ">Click here for more details.</button></form><br>";
     ?>
-    (<a href="/project_pg.php">Click here for more details.</a>)
+    <!--(<a href="/prototype/project_pg.php">Click here for more details.</a>)-->
   </div>
   <div class="bottom_space" style="height:100px"></div>
   <div class="footer">
