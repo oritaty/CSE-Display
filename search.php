@@ -92,23 +92,12 @@
     //Create connection.
     $conn = new mysqli($servername, $username, $password, $dbname);
     $sql = "SELECT * FROM project";
+    $toBeDisplayed = false;
 
     if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
         $key = filter_input(INPUT_POST, 'searchterm');
-        $result = $conn->query($sql);
-	while($row = $result->fetch_assoc()) {
-            if (stristr($row['name'], $key)) {
-                echo '<img src="', $row['pic_url'], '" alt="', $row['pic_url'],
-                        '"style="width:180px;height:130px" /><br>';
-                echo "Name: ", $row['name'], "<br>";
-                echo "Start date: ", $row['start_date'], "<br>";
-                echo "Description: ", $row['description'], "<br>";
-                echo "Total access: ", $row['access_cnt'], "<br>";
-                echo "<form action=", '"project_pg.php"', "method=", '"post"', ">
-                        <button type=", '"submit"', "name=", '"hello"', "value=", $row['project_id'],
-                        " class=", '"btn-link"', ">Go see the details</button></form><br><br>";
-            }
-        }
+        $sql = $sql." WHERE name LIKE '%".$key."%'";
+        $toBeDisplayed = true;
     } else if (isset($_POST['sub'])) {
         $year = $_POST['year'];
         $month = $_POST['month'];
@@ -122,6 +111,10 @@
                 $sql = $sql." AND MONTH(start_date) = ".$month;
             }
         }
+        $toBeDisplayed = true;
+    }
+
+    if ($toBeDisplayed) {
         $result = $conn->query($sql);
         if ($result != NULL) {
             while($row = $result->fetch_assoc()) {
