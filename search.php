@@ -1,4 +1,4 @@
-<?php require_once('project.php'); ;?>
+<?php require_once('project.php'); ?>
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8"/>
@@ -13,7 +13,7 @@
     <h1 class="header">CSE Display Project</h1>
   </div>
   <div class="searchbox">
-    <form method="post" action="/search.php">
+    <form method="post" action="search.php">
       Search:
       <input type="text" name="searchterm">
       <input type="submit" value="Submit">
@@ -22,15 +22,16 @@
   <div class="searchtab">
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Date</h4>
     <I>Year:</I>
-    <select name="year">
+    <select name="year" form="tab">
       <option>2017</option>
       <option>2016</option>
       <option>2015</option>
       <option>2014</option>
       <option>2013</option>
+      <option>All</option>
     </select>
     <I>Month:</I>
-    <select name="month">
+    <select name="month" form="tab">
       <option>1</option>
       <option>2</option>
       <option>3</option>
@@ -43,58 +44,100 @@
       <option>10</option>
       <option>11</option>
       <option>12</option>
+      <option>All</option>
     </select>
     <hr>
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Person</h4>
+    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
+        Search by Person<br>(Not available now).</h4>
     <I>Name:</I>
-    <select name="person">
-      <option>Donald Trump</option>
+    <select name="person" form="">
       <option>Barack Obama</option>
+      <option>Donald Trump</option>
       <option>George Bush</option>
+      <option>All</option>
     </select>
     <hr>
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Sub-category</h4>
+    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
+        Search by Sub-category<br>(Not available now).</h4>
     <I>Category:</I>
-    <select name="sub-cetegory">
+    <select name="sub-cetegory" form="">
       <option>AI</option>
       <option>CG</option>
       <option>Network</option>
+      <option>All</option>
     </select>
     <hr>
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Department</h4>
+    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
+        Search by Department<br>(Not available now).</h4>
     <I>Department:</I>
-    <select name="department">
+    <select name="department" form="">
       <option>CSE</option>
       <option>CEC</option>
+      <option>All</option>
     </select>
     <hr>
-    <input type="submit" value="Search" style="">
+    <form method="post" action="search.php" id="tab">
+        <input type="submit" name="sub" value="Search" style="">
+    </form>
   </div>
   <div class="searchresults">
     <!--<a href='index.php?hello=true'>Run PHP Function</a>Test-->
     <h2><b><l>Search Result: </l></b></h2>
     <?php
-    if (isset($_GET['hello'])) {
-      echo 'I just ran a php function';
-      $currentTarget->incrementCnt();
-    }
-    //echo $projects[2]->getAccessCount();
-    ?>
-    <?php
+    $servername = 'localhost';
+    $username = 'root';
+    $password = '';
+    $dbname = 'testdb';
+
+    //Create connection.
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    $sql = "SELECT * FROM project";
+
     if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
         $key = filter_input(INPUT_POST, 'searchterm');
-        for ($i = 0; $i<count($projects); $i++) {
-            if (stristr($projects[$i]->getProjectName(), $key)) {
-                echo '<img src="', $projects[$i]->getPicURL(), '" alt="', $projects[$i]->getPicURL(),
+        $result = $conn->query($sql);
+	      while($row = $result->fetch_assoc()) {
+            if (stristr($row['name'], $key)) {
+                echo '<img src="', $row['pic_url'], '" alt="', $row['pic_url'],
                         '"style="width:180px;height:130px" /><br>';
-                echo "Name: ", $projects[$i]->getProjectName(), "<br>";
-                echo "Start date: ", $projects[$i]->getStartDate(), "<br>";
-                echo "Description: ", $projects[$i]->getProjectDescription(), "<br>";
-                echo "Total access: ", $projects[$i]->getAccessCount(), "<br>";
-                echo "<a href=",'"search.php?hello=true"', ">[=> Go see the details.]</a><br><br><br>";
+                echo "Name: ", $row['name'], "<br>";
+                echo "Start date: ", $row['start_date'], "<br>";
+                echo "Description: ", $row['description'], "<br>";
+                echo "Total access: ", $row['access_cnt'], "<br>";
+                echo "<form action=", '"project_pg.php"', "method=", '"post"', ">
+                        <button type=", '"submit"', "name=", '"hello"', "value=", $row['project_id'],
+                        " class=", '"btn-link"', ">Go see the details</button></form><br><br>";
+            }
+        }
+    } else if (isset($_POST['sub'])) {
+        $year = $_POST['year'];
+        $month = $_POST['month'];
+        if ($year != "All") {
+            $sql = $sql." WHERE YEAR(start_date) = ".$year;
+        }
+        if ($month != "All") {
+            if ($year == "All") {
+                $sql = $sql." WHERE MONTH(start_date) = ".$month;
+            } else {
+                $sql = $sql." AND MONTH(start_date) = ".$month;
+            }
+        }
+        $result = $conn->query($sql);
+        if ($result != NULL) {
+            while($row = $result->fetch_assoc()) {
+                echo '<img src="', $row['pic_url'], '" alt="', $row['pic_url'],
+                        '"style="width:180px;height:130px" /><br>';
+                echo "Name: ", $row['name'], "<br>";
+                echo "Start date: ", $row['start_date'], "<br>";
+                echo "Description: ", $row['description'], "<br>";
+                echo "Total access: ", $row['access_cnt'], "<br>";
+                echo "<form action=", '"project_pg.php"', "method=", '"post"', ">
+                        <button type=", '"submit"', "name=", '"hello"', "value=", $row['project_id'],
+                        " class=", '"btn-link"', ">Go see the details</button></form><br><br>";
             }
         }
     }
+    $conn->close();
     ?>
   </div>
   <div class="bottom_space" style="height:100px"></div>

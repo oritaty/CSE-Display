@@ -1,4 +1,23 @@
 <?php require_once('project.php'); ?>
+<?php
+$proj = NULL;
+if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello') != '') {
+    $id = filter_input(INPUT_POST, 'hello');
+    $servername = 'localhost';
+    $username = 'root';
+    $password = '';
+    $dbname = 'testdb';
+
+    //Create connection.
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    $sql0 = "UPDATE project SET access_cnt = access_cnt + 1 WHERE project_id = ". $id;
+    $conn->query($sql0);
+    $sql = "SELECT * FROM project WHERE project_id = ". $id;
+    $result = $conn->query($sql);
+    $proj = $result->fetch_assoc();
+    $conn->close();
+}
+?>
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8"/>
@@ -13,7 +32,7 @@
     <h1 class="header">CSE Display Project</h1>
   </div>
   <div class="searchbox">
-    <form method="post" action="/search.php">
+    <form method="post" action="search.php">
       Search:
       <input type="text" name="searchterm">
       <input type="submit" value="Submit">
@@ -22,15 +41,16 @@
   <div class="searchtab">
     <h4 style="margin-top:0.1cm;margin-bottom:-0.0cm;">Search by Date</h4>
     <I>Year:</I>
-    <select name="year">
+    <select name="year" form="tab">
       <option>2017</option>
       <option>2016</option>
       <option>2015</option>
       <option>2014</option>
       <option>2013</option>
+      <option>All</option>
     </select>
     <I>Month:</I>
-    <select name="month">
+    <select name="month" form="tab">
       <option>1</option>
       <option>2</option>
       <option>3</option>
@@ -43,32 +63,41 @@
       <option>10</option>
       <option>11</option>
       <option>12</option>
+      <option>All</option>
     </select>
     <hr>
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Person</h4>
+    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
+        Search by Person<br>(Not available now).</h4>
     <I>Name:</I>
-    <select name="person">
-      <option>Donald Trump</option>
+    <select name="person" form="">
       <option>Barack Obama</option>
+      <option>Donald Trump</option>
       <option>George Bush</option>
+      <option>All</option>
     </select>
     <hr>
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Sub-category</h4>
+    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
+        Search by Sub-category<br>(Not available now).</h4>
     <I>Category:</I>
-    <select name="sub-cetegory">
+    <select name="sub-cetegory" form="">
       <option>AI</option>
       <option>CG</option>
       <option>Network</option>
+      <option>All</option>
     </select>
     <hr>
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Department</h4>
+    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
+        Search by Department<br>(Not available now).</h4>
     <I>Department:</I>
-    <select name="department">
+    <select name="department" form="">
       <option>CSE</option>
       <option>CEC</option>
+      <option>All</option>
     </select>
     <hr>
-    <input type="submit" value="Search" style="">
+    <form method="post" action="search.php" id="tab">
+        <input type="submit" name="sub" value="Search" style="">
+    </form>
   </div>
   <div class="media_buttons">
     <p>
@@ -79,16 +108,20 @@
   </div>
   <div class="project_pic">
     <?php
-    echo '<img src="', $currentTarget->getPicURL(), '" alt="', $currentTarget->getPicURL(), '" /><br>';
+    if ($proj != NULL) {
+        echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>';
+    }
     ?>
   </div>
   <div class="project_description">
     <h2><b>Metadata: </b></h2>
     <?php
-    echo 'Name: ', $currentTarget->getProjectName(), '<br>';
-    echo 'Start date: ', $currentTarget->getStartDate(), '<br>';
-    echo 'Description: ', $currentTarget->getProjectDescription(), '<br>';
-    echo 'Total access: ', $currentTarget->getAccessCount(), '<br>';
+    if ($proj != NULL) {
+        echo 'Name: ', $proj['name'], '<br>';
+        echo 'Start date: ', $proj['start_date'], '<br>';
+        echo 'Description: ', $proj['description'], '<br>';
+        echo 'Total access: ', $proj['access_cnt'], '<br>';
+    }
     ?>
   </div>
   <div class="recommendations">
