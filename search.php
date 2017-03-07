@@ -96,7 +96,7 @@
     if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
         $key = filter_input(INPUT_POST, 'searchterm');
         $result = $conn->query($sql);
-	      while($row = $result->fetch_assoc()) {
+	while($row = $result->fetch_assoc()) {
             if (stristr($row['name'], $key)) {
                 echo '<img src="', $row['pic_url'], '" alt="', $row['pic_url'],
                         '"style="width:180px;height:130px" /><br>';
