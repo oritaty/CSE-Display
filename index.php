@@ -5,12 +5,12 @@ $id = filter_input(INPUT_POST, 'hello');
 $servername = 'localhost';
 $username = 'root';
 $password = '';
-$dbname = 'testdb';
+$dbname = 'test';
 
 //Create connection.
 $conn = new mysqli($servername, $username, $password, $dbname);
-$sql0 = "SELECT * FROM project WHERE access_cnt = (SELECT max(access_cnt) FROM project)";
-$sql = "SELECT * FROM project WHERE start_date = (SELECT max(start_date) FROM project)";
+$sql0 = "SELECT * FROM project02 WHERE access_cnt = (SELECT max(access_cnt) FROM project02)";
+$sql = "SELECT * FROM project02 WHERE start_date = (SELECT max(start_date) FROM project02)";
 $result0 = $conn->query($sql0);
 $result = $conn->query($sql);
 $most_popular = $result0->fetch_assoc();
@@ -88,19 +88,19 @@ $conn->close();
     </select>
     <hr>
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-        Search by Sub-category<br>(Not available now).</h4>
+        Search by Sub-category</h4>
     <I>Category:</I>
-    <select name="sub-cetegory" form="">
+    <select name="subcategory" form="tab">
       <option>AI</option>
       <option>CG</option>
-      <option>Network</option>
+      <option>Systems</option>
       <option>All</option>
     </select>
     <hr>
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-        Search by Department<br>(Not available now).</h4>
+        Search by Department</h4>
     <I>Department:</I>
-    <select name="department" form="">
+    <select name="department" form="tab">
       <option>CSE</option>
       <option>CEC</option>
       <option>All</option>
@@ -124,16 +124,20 @@ $conn->close();
     <?php
     if ($displayRecent) {
         echo 'Name: ', $most_recent['name'], '<br>';
+        echo 'Department: ', $most_recent['department'], '<br>';
         echo 'Start date: ', $most_recent['start_date'], '<br>';
         echo 'Description: ', $most_recent['description'], '<br>';
+        echo 'Sub-category: ', $most_recent['sub_category'], '<br>';
         echo 'Total access: ', $most_recent['access_cnt'], '<br>';
         echo "<form action=", '"project_pg.php"', "method=", '"post"', ">
                           <button type=", '"submit"', "name=", '"hello"', "value=", $most_recent['project_id'],
                           " class=", '"btn-link"', ">Click here for more details.</button></form><br>";
     } else {
         echo 'Name: ', $most_popular['name'], '<br>';
+        echo 'Department: ', $most_popular['department'], '<br>';
         echo 'Start date: ', $most_popular['start_date'], '<br>';
         echo 'Description: ', $most_popular['description'], '<br>';
+        echo 'Sub-category: ', $most_popular['sub_category'], '<br>';
         echo 'Total access: ', $most_popular['access_cnt'], '<br>';
         echo "<form action=", '"project_pg.php"', "method=", '"post"', ">
                           <button type=", '"submit"', "name=", '"hello"', "value=", $most_popular['project_id'],

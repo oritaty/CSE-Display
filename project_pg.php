@@ -1,22 +1,34 @@
 <?php require_once('project.php'); ?>
 <?php
+$id = NULL;
+$media = NULL;
 $proj = NULL;
+$toBeDisplayed = false;
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$dbname = 'test';
+
+//Create connection.
+$conn = new mysqli($servername, $username, $password, $dbname);
+
 if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello') != '') {
     $id = filter_input(INPUT_POST, 'hello');
-    $servername = 'localhost';
-    $username = 'root';
-    $password = '';
-    $dbname = 'testdb';
-
-    //Create connection.
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    $sql0 = "UPDATE project SET access_cnt = access_cnt + 1 WHERE project_id = ". $id;
+    $sql0 = "UPDATE project02 SET access_cnt = access_cnt + 1 WHERE project_id = ". $id;
     $conn->query($sql0);
-    $sql = "SELECT * FROM project WHERE project_id = ". $id;
+    $toBeDisplayed = true;
+} else if (isset($_POST['media']) && isset($_POST['projectid'])) {
+    $id = $_POST['projectid'];
+    $media = $_POST['media'];
+    $toBeDisplayed = true;
+}
+
+if ($toBeDisplayed) {
+    $sql = "SELECT * FROM project02 WHERE project_id = ". $id;
     $result = $conn->query($sql);
     $proj = $result->fetch_assoc();
-    $conn->close();
 }
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html>
@@ -77,19 +89,19 @@ if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello
     </select>
     <hr>
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-        Search by Sub-category<br>(Not available now).</h4>
+        Search by Sub-category</h4>
     <I>Category:</I>
-    <select name="sub-cetegory" form="">
+    <select name="subcategory" form="tab">
       <option>AI</option>
       <option>CG</option>
-      <option>Network</option>
+      <option>Systems</option>
       <option>All</option>
     </select>
     <hr>
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-        Search by Department<br>(Not available now).</h4>
+        Search by Department</h4>
     <I>Department:</I>
-    <select name="department" form="">
+    <select name="department" form="tab">
       <option>CSE</option>
       <option>CEC</option>
       <option>All</option>
@@ -100,16 +112,31 @@ if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello
     </form>
   </div>
   <div class="media_buttons">
-    <p>
-    <button class="videoButton" style="width:100px;height:50px;margin-right:1.5cm">Videos</button>
-    <button class="picButton" style="width:100px;height:50px;margin-right:1.5cm;margin-left:1.5cm">Pictures</button>
-    <button class="reportButton" style="width:100px;height:50px;margin-left:1.5cm">Reports</button>
-  </p>
+    <!--<p>-->
+    <form action="" method="post">
+        <button class="videoButton" type="submit" name="media" value="1"
+            style="width:100px;height:50px;margin-right:1.5cm">Videos</button>
+        <button class="picButton" type="submit" name="media" value="2"
+            style="width:100px;height:50px;margin-right:1.5cm;margin-left:1.5cm">Pictures</button>
+        <button class="reportButton" type="submit" name="media" value="3"
+            style="width:100px;height:50px;margin-left:1.5cm">Reports</button>
+            <input type="hidden" name="projectid" value="<?php echo $id ?>">
+    </form>
+  <!--</p>-->
   </div>
   <div class="project_pic">
     <?php
     if ($proj != NULL) {
-        echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>';
+        if ($media != NULL) {
+            switch($media) {
+                case 1: echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>'; break;
+                case 2: echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>'; break;
+                case 3: echo '<embed src="', $proj['repo_url'], '" width="800px" height="1000px /><br>'; break;
+                default: break;
+            }
+        } else {
+            echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>';
+        }
     }
     ?>
   </div>
@@ -118,18 +145,25 @@ if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello
     <?php
     if ($proj != NULL) {
         echo 'Name: ', $proj['name'], '<br>';
+        echo 'Department: ', $proj['department'], '<br>';
         echo 'Start date: ', $proj['start_date'], '<br>';
         echo 'Description: ', $proj['description'], '<br>';
-        echo 'Total access: ', $proj['access_cnt'], '<br>';
+        echo 'Sub-Category: ', $proj['sub_category'], '<br>';
+        echo 'Total access: ', $proj['access_cnt'], '<br><br>';
     }
     ?>
   </div>
   <div class="recommendations">
-    <p>
-    <button class="recButton1" style="width:150px;height:75px;margin-right:2cm">Recommendation 1</button>
-    <button class="recButton2" style="width:150px;height:75px;margin-right:2cm;margin-left:2cm">Recommendation 2</button>
-    <button class="recButton3" style="width:150px;height:75px;margin-left:2cm">Recommendation 3</button>
-  </p>
+    <!--<p>-->
+    <form action="" method="post">
+        <button type="submit" class="recButton1" style="width:150px;height:75px;margin-right:2cm">
+            Recommendation 1</button>
+        <button type="submit" class="recButton2" style="width:150px;height:75px;margin-right:2cm;margin-left:2cm">
+            Recommendation 2</button>
+        <button type="submit" class="recButton3" style="width:150px;height:75px;margin-left:2cm">
+            Recommendation 3</button>
+    </form>
+  <!--</p>-->
   </div>
   <div class="bottom_space" style="height:100px"></div>
   <div class="footer">

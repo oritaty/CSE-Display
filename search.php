@@ -58,19 +58,19 @@
     </select>
     <hr>
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-        Search by Sub-category<br>(Not available now).</h4>
+        Search by Sub-category</h4>
     <I>Category:</I>
-    <select name="sub-cetegory" form="">
+    <select name="subcategory" form="tab">
       <option>AI</option>
       <option>CG</option>
-      <option>Network</option>
+      <option>Systems</option>
       <option>All</option>
     </select>
     <hr>
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-        Search by Department<br>(Not available now).</h4>
+        Search by Department</h4>
     <I>Department:</I>
-    <select name="department" form="">
+    <select name="department" form="tab">
       <option>CSE</option>
       <option>CEC</option>
       <option>All</option>
@@ -87,11 +87,11 @@
     $servername = 'localhost';
     $username = 'root';
     $password = '';
-    $dbname = 'testdb';
+    $dbname = 'test';
 
     //Create connection.
     $conn = new mysqli($servername, $username, $password, $dbname);
-    $sql = "SELECT * FROM project";
+    $sql = "SELECT * FROM project02";
     $toBeDisplayed = false;
 
     if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
@@ -101,14 +101,31 @@
     } else if (isset($_POST['sub'])) {
         $year = $_POST['year'];
         $month = $_POST['month'];
+        $subCategory = $_POST['subcategory'];
+        $department = $_POST['department'];
+
         if ($year != "All") {
             $sql = $sql." WHERE YEAR(start_date) = ".$year;
         }
         if ($month != "All") {
-            if ($year == "All") {
+            if (!stristr($sql, "WHERE")) {
                 $sql = $sql." WHERE MONTH(start_date) = ".$month;
             } else {
                 $sql = $sql." AND MONTH(start_date) = ".$month;
+            }
+        }
+        if ($subCategory != "All") {
+            if (!stristr($sql, "WHERE")) {
+                $sql = $sql." WHERE sub_category = '".$subCategory."'";
+            } else {
+                $sql = $sql." AND sub_category = '".$subCategory."'";
+            }
+        }
+        if ($department != "All") {
+            if (!stristr($sql, "WHERE")) {
+                $sql = $sql." WHERE department = '".$department."'";
+            } else {
+                $sql = $sql." AND department = '".$department."'";
             }
         }
         $toBeDisplayed = true;
@@ -121,8 +138,10 @@
                 echo '<img src="', $row['pic_url'], '" alt="', $row['pic_url'],
                         '"style="width:180px;height:130px" /><br>';
                 echo "Name: ", $row['name'], "<br>";
+                echo "Department: ", $row['department'], "<br>";
                 echo "Start date: ", $row['start_date'], "<br>";
                 echo "Description: ", $row['description'], "<br>";
+                echo "Sub-category: ", $row['sub_category'], "<br>";
                 echo "Total access: ", $row['access_cnt'], "<br>";
                 echo "<form action=", '"project_pg.php"', "method=", '"post"', ">
                         <button type=", '"submit"', "name=", '"hello"', "value=", $row['project_id'],

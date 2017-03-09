@@ -1,0 +1,34 @@
+CREATE TABLE `project02` (
+  `name` varchar(15) NOT NULL,
+  `project_id` int(10) UNSIGNED NOT NULL,
+  `pic_url` varchar(100) DEFAULT NULL,
+  `repo_url` varchar(100) DEFAULT NULL,
+  `video_url` varchar(100) DEFAULT NULL,
+  `access_cnt` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `start_date` date NOT NULL,
+  `sub_category` varchar(20) NOT NULL,
+  `department` varchar(5) NOT NULL,
+  `description` varchar(300) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `project02`
+--
+
+INSERT INTO `project02` (`name`, `project_id`, `pic_url`, `repo_url`, `video_url`, `access_cnt`, `start_date`, `sub_category`, `department`, `description`) VALUES
+('AI', 1, 'pics/ai.jpg', 'reports/ai.pdf', NULL, 13, '2017-02-01', 'AI', 'CSE', 'A research project about Artificial Intelligence.'),
+('CG', 2, 'pics/cg.jpg', 'reports/cg.pdf', NULL, 29, '2017-02-09', 'CG', 'CSE', 'A research project about Computer Graphics.'),
+('Network', 3, 'pics/network.png', 'reports/network.pdf', NULL, 24, '2017-02-03', 'Systems', 'CSE', 'A research project about networking.'),
+('Compiler', 4, 'pics/compiler.png', 'reports/compiler.pdf', NULL, 5, '2017-02-05', 'Programming language', 'CSE', 'A research project about compiler and programming language.'),
+('Database', 5, 'pics/no_img.png', 'reports/db.pdf', NULL, 5, '2017-01-18', 'Systems', 'CSE', 'A research project about database systems.'),
+('Independent', 6, 'pics/no_img.png', NULL, NULL, 2, '2017-01-27', 'Other', 'CSE', 'An independent project.');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `project02`
+--
+ALTER TABLE `project02`
+  ADD PRIMARY KEY (`project_id`);
