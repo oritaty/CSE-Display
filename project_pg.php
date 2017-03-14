@@ -1,4 +1,4 @@
-<?php require_once('project.php'); ?>
+<?php include 'sql_conn.php'; ?>
 <?php
 $id = NULL;
 $media = NULL;
@@ -21,12 +21,18 @@ if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello
     $id = $_POST['projectid'];
     $media = $_POST['media'];
     $toBeDisplayed = true;
+} else {
+    // Need error handling.
 }
 
 if ($toBeDisplayed) {
     $sql = "SELECT * FROM project02 WHERE project_id = ". $id;
     $result = $conn->query($sql);
     $proj = $result->fetch_assoc();
+    $recommends = getRecommendations($id);
+    $recFirst = $recommends[0];
+    $recSecond = $recommends[1];
+    $recThird = $recommends[2];
 }
 $conn->close();
 ?>
@@ -129,10 +135,19 @@ $conn->close();
     if ($proj != NULL) {
         if ($media != NULL) {
             switch($media) {
-                case 1: echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>'; break;
-                case 2: echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>'; break;
-                case 3: echo '<embed src="', $proj['repo_url'], '" width="800px" height="1000px /><br>'; break;
-                default: break;
+                case 1:
+                    // Video borrowed from w3 school: https://www.w3schools.com/html/html5_video.asp
+                    echo '<video width="600" controls><source src="'.$proj['video_url'].
+                        '"type="video/mp4"></video>';
+                    break;
+                case 2:
+                    echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>';
+                    break;
+                case 3:
+                    echo '<embed src="', $proj['repo_url'], '" width="800px" height="1000px /><br>';
+                    break;
+                default:
+                    break;
             }
         } else {
             echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>';
@@ -149,22 +164,24 @@ $conn->close();
         echo 'Start date: ', $proj['start_date'], '<br>';
         echo 'Description: ', $proj['description'], '<br>';
         echo 'Sub-Category: ', $proj['sub_category'], '<br>';
-        echo 'Total access: ', $proj['access_cnt'], '<br><br>';
+        echo 'Total access: ', $proj['access_cnt'], '<br>';
     }
     ?>
   </div>
   <div class="recommendations">
     <!--<p>-->
+    <h2><b>Recommended to you: </b></h2><br>
     <form action="" method="post">
-        <button type="submit" class="recButton1" style="width:150px;height:75px;margin-right:2cm">
-            Recommendation 1</button>
-        <button type="submit" class="recButton2" style="width:150px;height:75px;margin-right:2cm;margin-left:2cm">
-            Recommendation 2</button>
-        <button type="submit" class="recButton3" style="width:150px;height:75px;margin-left:2cm">
-            Recommendation 3</button>
+        <button type="submit" class="recButton1" name="hello" value="<?php echo $recFirst ?>"
+                style="width:150px;height:75px;margin-right:2cm">Recommendation 1</button>
+        <button type="submit" class="recButton2" name="hello" value="<?php echo $recSecond ?>"
+                style="width:150px;height:75px;margin-right:2cm;margin-left:2cm">Recommendation 2</button>
+        <button type="submit" class="recButton3" name="hello" value="<?php echo $recThird ?>"
+                style="width:150px;height:75px;margin-left:2cm">Recommendation 3</button>
     </form>
   <!--</p>-->
   </div>
+  <br>
   <div class="bottom_space" style="height:100px"></div>
   <div class="footer">
     <h2>This is footer.</h2>

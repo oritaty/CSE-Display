@@ -1,4 +1,3 @@
-<?php require_once('project.php'); ?>
 <?php
 $displayRecent = true;
 $id = filter_input(INPUT_POST, 'hello');
