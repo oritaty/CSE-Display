@@ -69,7 +69,25 @@ $conn->close();
           } else {
               send = 'recent';
           }
-          var xmlhttp = new XMLHttpRequest();
+
+          var xmlhttp;
+          try {
+              // Chtome, Firefox, Safari etc.
+              xmlhttp = new XMLHttpRequest();
+          } catch(e) {
+              try {
+                  // IE.
+                  xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+              } catch(e) {
+                  try {
+                      // IE.
+                      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                  } catch(e) {
+                      alert("Something is wrong.");
+                  }
+              }
+          }
+          // var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function(){
               if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                   counter++;
