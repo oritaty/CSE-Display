@@ -135,7 +135,7 @@
         if ($result != NULL) {
             while($row = $result->fetch_assoc()) {
                 echo '<img src="', $row['pic_url'], '" alt="', $row['pic_url'],
-                        '"style="width:180px;height:130px" /><br>';
+                        '"style="width:auto;height:180px" /><br>';
                 echo "Name: ", $row['name'], "<br>";
                 echo "Department: ", $row['department'], "<br>";
                 echo "Start date: ", $row['start_date'], "<br>";

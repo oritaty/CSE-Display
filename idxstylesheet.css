@@ -26,6 +26,8 @@ div.slides {
 
 div.description {
   text-align: center;
+  /* border: 1px solid black;
+  border-collapse: collapse; */
 }
 
 /* Toggle switch: borrowed from w3 schook(http://www.w3schools.com/howto/howto_css_switch.asp)*/
