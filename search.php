@@ -22,15 +22,16 @@
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Date</h4>
     <I>Year:</I>
     <select name="year" form="tab">
+      <option>All</option>
       <option>2017</option>
       <option>2016</option>
       <option>2015</option>
       <option>2014</option>
       <option>2013</option>
-      <option>All</option>
     </select>
     <I>Month:</I>
     <select name="month" form="tab">
+      <option>All</option>
       <option>1</option>
       <option>2</option>
       <option>3</option>
@@ -43,9 +44,8 @@
       <option>10</option>
       <option>11</option>
       <option>12</option>
-      <option>All</option>
     </select>
-    <hr>
+    <hr><!--
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
         Search by Person<br>(Not available now).</h4>
     <I>Name:</I>
@@ -55,24 +55,24 @@
       <option>George Bush</option>
       <option>All</option>
     </select>
-    <hr>
+    <hr>-->
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
         Search by Sub-category</h4>
     <I>Category:</I>
     <select name="subcategory" form="tab">
+      <option>All</option>
       <option>AI</option>
       <option>CG</option>
       <option>Systems</option>
-      <option>All</option>
     </select>
     <hr>
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
         Search by Department</h4>
     <I>Department:</I>
     <select name="department" form="tab">
+      <option>All</option>
       <option>CSE</option>
       <option>CEC</option>
-      <option>All</option>
     </select>
     <hr>
     <form method="post" action="search.php" id="tab">
@@ -90,6 +90,10 @@
 
     //Create connection.
     $conn = new mysqli($servername, $username, $password, $dbname);
+    // Check connection.
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
     $sql = "SELECT * FROM project02";
     $toBeDisplayed = false;
 

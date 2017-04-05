@@ -11,6 +11,10 @@ $dbname = 'test';
 
 //Create connection.
 $conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection.
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello') != '') {
     $id = filter_input(INPUT_POST, 'hello');
@@ -60,15 +64,16 @@ $conn->close();
     <h4 style="margin-top:0.1cm;margin-bottom:-0.0cm;">Search by Date</h4>
     <I>Year:</I>
     <select name="year" form="tab">
+      <option>All</option>
       <option>2017</option>
       <option>2016</option>
       <option>2015</option>
       <option>2014</option>
       <option>2013</option>
-      <option>All</option>
     </select>
     <I>Month:</I>
     <select name="month" form="tab">
+      <option>All</option>
       <option>1</option>
       <option>2</option>
       <option>3</option>
@@ -81,9 +86,9 @@ $conn->close();
       <option>10</option>
       <option>11</option>
       <option>12</option>
-      <option>All</option>
     </select>
     <hr>
+    <!--
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
         Search by Person<br>(Not available now).</h4>
     <I>Name:</I>
@@ -94,23 +99,24 @@ $conn->close();
       <option>All</option>
     </select>
     <hr>
+    -->
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
         Search by Sub-category</h4>
     <I>Category:</I>
     <select name="subcategory" form="tab">
+      <option>All</option>
       <option>AI</option>
       <option>CG</option>
       <option>Systems</option>
-      <option>All</option>
     </select>
     <hr>
     <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
         Search by Department</h4>
     <I>Department:</I>
     <select name="department" form="tab">
+      <option>All</option>
       <option>CSE</option>
       <option>CEC</option>
-      <option>All</option>
     </select>
     <hr>
     <form method="post" action="search.php" id="tab">
@@ -132,26 +138,36 @@ $conn->close();
   </div>
   <div class="project_pic">
     <?php
-    if ($proj != NULL) {
-        if ($media != NULL) {
-            switch($media) {
-                case 1:
-                    // Video borrowed from w3 school: https://www.w3schools.com/html/html5_video.asp
-                    echo '<video width="600" controls><source src="'.$proj['video_url'].
-                        '"type="video/mp4"></video>';
-                    break;
-                case 2:
-                    echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>';
-                    break;
-                case 3:
-                    echo '<embed src="', $proj['repo_url'], '" width="800px" height="1000px /><br>';
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            echo '<img src="', $proj['pic_url'], '" alt="', $proj['pic_url'], '" /><br>';
+    if ($proj != NULL && $media != NULL) {
+        switch($media) {
+            case 1:
+                if ($proj['video_url'] == NULL || $proj['video_url'] == "") {
+                    echo '<h2>No contents to be displayed.<h2>';
+                } else {
+                    echo '<video width="600" controls><source src="'.
+                            $proj['video_url'].'"type="video/mp4"></video>';
+                }
+                break;
+            case 2:
+                // Every project must have at least one picture.
+                echo '<img src="', $proj['pic_url'], '" alt="'.$proj['pic_url'].
+                    '" style="width:450px;height:4auto"/><br>';
+                break;
+            case 3:
+                if ($proj['repo_url'] == NULL || $proj['repo_url'] == "") {
+                    echo '<h2>No contents to be displayed.<h2>';
+                } else {
+                    echo '<embed src="'.$proj['repo_url'].
+                            '" width="800px" height="1000px /><br>';
+                }
+                break;
+            default:
+                break;
         }
+    } else {
+        // Need to be tested.
+        echo '<img src="', $proj['pic_url'].'" alt="'.$proj['pic_url'].
+            '" style="width:450px;height:auto"/><br>';
     }
     ?>
   </div>
