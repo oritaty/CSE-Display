@@ -26,6 +26,7 @@ div.slides {
 
 div.description {
   text-align: center;
+  /* Added for experiments. */
   /* border: 1px solid black;
   border-collapse: collapse; */
 }
@@ -124,4 +125,19 @@ input:checked + .slider:before {
 
 .recommendations {
   text-align: center;
+}
+
+/*Works only with firefox.*/
+.slick-prev {
+    left: 300px !important;
+    background: red; /*to notice it, is white*/
+}
+.slick-next {
+    right: 300px !important;
+    background: red; /*to notice it, is white*/
+}
+
+.slick-prev:before, .slick-next:before{
+    color: black;
+    left: -80px;
 }

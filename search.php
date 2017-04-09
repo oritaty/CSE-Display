@@ -1,3 +1,31 @@
+<?php
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$dbname = 'ResearchDisplayDb';
+
+//Create connection.
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection.
+if ($conn->connect_error) {
+    die("Connection failed: ".$conn->connect_error);
+}
+
+$sql1 = "SELECT DISTINCT YEAR(YEAR) AS Year FROM Project";
+$sql2 = "SELECT DISTINCT Name FROM Department";
+$sql3 = "SELECT DISTINCT Name FROM Category";
+$sql4 = "SELECT DISTINCT User.Name, User.MiamiId
+         FROM User, UserType
+         WHERE User.UserTypeId = UserType.Id AND
+               User.Name <> '' AND
+               User.MiamiId <> '' AND
+               UserType.Name <> 'Admin'";
+
+$years = $conn->query($sql1);
+$departments = $conn->query($sql2);
+$categories = $conn->query($sql3);
+$students = $conn->query($sql4);
+?>
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8"/>
@@ -19,117 +47,117 @@
     </form>
   </div>
   <div class="searchtab">
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">Search by Date</h4>
-    <I>Year:</I>
-    <select name="year" form="tab">
-      <option>All</option>
-      <option>2017</option>
-      <option>2016</option>
-      <option>2015</option>
-      <option>2014</option>
-      <option>2013</option>
-    </select>
-    <I>Month:</I>
-    <select name="month" form="tab">
-      <option>All</option>
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-      <option>6</option>
-      <option>7</option>
-      <option>8</option>
-      <option>9</option>
-      <option>10</option>
-      <option>11</option>
-      <option>12</option>
-    </select>
-    <hr><!--
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-        Search by Person<br>(Not available now).</h4>
-    <I>Name:</I>
-    <select name="person" form="">
-      <option>Barack Obama</option>
-      <option>Donald Trump</option>
-      <option>George Bush</option>
-      <option>All</option>
-    </select>
-    <hr>-->
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-        Search by Sub-category</h4>
-    <I>Category:</I>
-    <select name="subcategory" form="tab">
-      <option>All</option>
-      <option>AI</option>
-      <option>CG</option>
-      <option>Systems</option>
-    </select>
-    <hr>
-    <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-        Search by Department</h4>
-    <I>Department:</I>
-    <select name="department" form="tab">
-      <option>All</option>
-      <option>CSE</option>
-      <option>CEC</option>
-    </select>
-    <hr>
-    <form method="post" action="search.php" id="tab">
-        <input type="submit" name="sub" value="Search" style="">
-    </form>
+      <h4 style="margin-top:0.1cm;margin-bottom:-0.0cm;">Search by Date</h4>
+      <I>Year:</I>
+      <select name="year" form="tab">
+          <?php
+          echo '<option>All</option>';
+          while ($row = $years->fetch_assoc()) {
+              echo '<option>' . $row['Year'] . '</option>';
+          }
+          ?>
+      </select>
+      <I>Month:</I>
+      <select name="month" form="tab">
+          <option>All</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+          <option>11</option>
+          <option>12</option>
+      </select>
+      <hr>
+      <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
+          Search by Person</h4>
+      <I>Name:</I>
+      <select name="person" form="tab">
+          <?php
+          echo '<option>All</option>';
+          while ($row = $students->fetch_assoc()) {
+              echo '<option>' . $row['Name'] . ' (' . $row['MiamiId'] . ')</option>';
+          }
+          ?>
+      </select>
+      <hr>
+      <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
+          Search by Sub-category</h4>
+      <I>Category:</I>
+      <select name="subcategory" form="tab">
+          <?php
+          echo '<option>All</option>';
+          while ($row = $categories->fetch_assoc()) {
+              echo '<option>' . $row['Name'] . '</option>';
+          }
+          ?>
+      </select>
+      <hr>
+      <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
+          Search by Department</h4>
+      <I>Department:</I>
+      <select name="department" form="tab">
+          <?php
+          echo '<option>All</option>';
+          while ($row = $departments->fetch_assoc()) {
+              echo '<option>' . $row['Name'] . '</option>';
+          }
+          ?>
+      </select>
+      <hr>
+      <form method="post" action="search.php" id="tab">
+          <input type="submit" name="sub" value="Search" style="">
+      </form>
   </div>
   <div class="searchresults">
     <!--<a href='index.php?hello=true'>Run PHP Function</a>Test-->
     <h2><b><l>Search Result: </l></b></h2>
     <?php
-    $servername = 'localhost';
-    $username = 'root';
-    $password = '';
-    $dbname = 'test';
-
-    //Create connection.
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection.
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    $sql = "SELECT * FROM project02";
+    $sql = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
+                         Project.AccessCount, Project.Description,
+                         Category.Name AS CName, Department.Name AS DName,
+                         Artifact.fileName
+            FROM Project, Category, Department, ProjectDepartment, Artifact,
+                 ProjectArtifact, ArtifactType
+            WHERE Project.CategoryId = Category.Id AND
+                  Project.Id = ProjectDepartment.ProjectId AND
+                  ProjectDepartment.DepartmentId = Department.Id AND
+                  Project.Id = ProjectArtifact.ProjectId AND
+                  ProjectArtifact.ArtifactId = Artifact.Id AND
+                  Artifact.TypeId = ArtifactType.Id AND
+                  ArtifactType.Name = 'IMAGE'";
     $toBeDisplayed = false;
 
     if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
         $key = filter_input(INPUT_POST, 'searchterm');
-        $sql = $sql." WHERE name LIKE '%".$key."%'";
+        $sql = $sql."\nAND Project.Title LIKE '%".$key."%'";
         $toBeDisplayed = true;
     } else if (isset($_POST['sub'])) {
         $year = $_POST['year'];
         $month = $_POST['month'];
         $subCategory = $_POST['subcategory'];
         $department = $_POST['department'];
+        $person = $_POST['person'];
 
         if ($year != "All") {
-            $sql = $sql." WHERE YEAR(start_date) = ".$year;
+            $sql = $sql."\nAND YEAR(Year) = ".$year;
         }
         if ($month != "All") {
-            if (!stristr($sql, "WHERE")) {
-                $sql = $sql." WHERE MONTH(start_date) = ".$month;
-            } else {
-                $sql = $sql." AND MONTH(start_date) = ".$month;
-            }
+            $sql = $sql."\nAND MONTH(Year) = ".$month;
         }
         if ($subCategory != "All") {
-            if (!stristr($sql, "WHERE")) {
-                $sql = $sql." WHERE sub_category = '".$subCategory."'";
-            } else {
-                $sql = $sql." AND sub_category = '".$subCategory."'";
-            }
+            $sql = $sql."\nAND Category.Name = '".$subCategory."'";
         }
         if ($department != "All") {
-            if (!stristr($sql, "WHERE")) {
-                $sql = $sql." WHERE department = '".$department."'";
-            } else {
-                $sql = $sql." AND department = '".$department."'";
-            }
+            $sql = $sql."\nAND Department.Name = '".$department."'";
+        }
+        if ($person != "All") {
+            // Do something
         }
         $toBeDisplayed = true;
     }
@@ -138,17 +166,17 @@
         $result = $conn->query($sql);
         if ($result != NULL) {
             while($row = $result->fetch_assoc()) {
-                echo '<img src="', $row['pic_url'], '" alt="', $row['pic_url'],
-                        '"style="width:auto;height:180px" /><br>';
-                echo "Name: ", $row['name'], "<br>";
-                echo "Department: ", $row['department'], "<br>";
-                echo "Start date: ", $row['start_date'], "<br>";
-                echo "Description: ", $row['description'], "<br>";
-                echo "Sub-category: ", $row['sub_category'], "<br>";
-                echo "Total access: ", $row['access_cnt'], "<br>";
-                echo "<form action=", '"project_pg.php"', "method=", '"post"', ">
-                        <button type=", '"submit"', "name=", '"hello"', "value=", $row['project_id'],
-                        " class=", '"btn-link"', ">Go see the details</button></form><br><br>";
+                echo '<img src="pics/', $row['fileName'], '" alt="', $row['pic_url'],
+                        '" style="width:auto;height:180px" /><br>';
+                echo 'Title: ', $row['Title'], '<br>';
+                echo 'Department: ', $row['DName'], '<br>';
+                echo 'Start date: ', $row['Year'], '<br>';
+                echo 'Description: ', $row['Description'], '<br>';
+                echo 'Sub-category: ', $row['CName'], '<br>';
+                echo 'Total access: ', $row['AccessCount'], '<br>';
+                echo "<form action=", '"project_pg.php"', "method=", '"post"', "><button type=",
+                        '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=",
+                        '"btn-link"', ">Go see the details.</button></form><br><br>";
             }
         }
     }

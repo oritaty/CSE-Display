@@ -13,7 +13,7 @@ if (isset($_REQUEST['req'])) {
 $servername = 'localhost';
 $username = 'root';
 $password = '';
-$dbname = 'test';
+$dbname = 'ResearchDisplayDb';
 
 //Create connection.
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -22,30 +22,41 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql1 = "SELECT * FROM project02 ORDER BY start_date DESC LIMIT 5";
-$sql2 = "SELECT * FROM project02 ORDER BY access_cnt DESC LIMIT 5";
-$most_recent = $conn->query($sql1);
-$most_popular = $conn->query($sql2);
+$sql = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
+                        Project.AccessCount, Project.Description,
+                        Category.Name AS CName, Department.Name AS DName,
+                        Artifact.fileName
+        FROM Project JOIN Category ON Project.CategoryId = Category.Id
+                     JOIN ProjectDepartment ON Project.Id = ProjectDepartment.ProjectId
+                     JOIN Department ON ProjectDepartment.DepartmentId = Department.Id
+                     JOIN ProjectArtifact ON Project.Id = ProjectArtifact.ProjectId
+                     JOIN Artifact ON ProjectArtifact.ArtifactId = Artifact.Id
+                     JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
+        WHERE ArtifactType.Name = 'IMAGE' ";
+$sqlRecent = $sql."\nORDER BY Project.YEAR DESC LIMIT 5";
+$sqlPopular = $sql."\nORDER BY Project.AccessCount DESC LIMIT 5";
+$mostRecent = $conn->query($sqlRecent);
+$mostPopular = $conn->query($sqlPopular);
 $conn->close();
 
 $target = NULL;
 if ($displayRecent) {
-    $target = $most_recent;
+    $target = $mostRecent;
 } else {
-    $target = $most_popular;
+    $target = $mostPopular;
 }
 
 while ($row = $target->fetch_assoc()) {
-    echo '<div><center><img src="', $row['pic_url'], '" alt="', $row['pic_url'],
+    echo '<div><center><img src="pics/', $row['fileName'], '" alt="', $row['pic_url'],
             '" style="width:auto;height:350px;margin-top:1cm" /><br>';
     echo "<h2>Description:</h2>";
-    echo 'Name: ', $row['name'], '<br>';
-    echo 'Department: ', $row['department'], '<br>';
-    echo 'Start date: ', $row['start_date'], '<br>';
-    echo 'Description: ', $row['description'], '<br>';
-    echo 'Sub-category: ', $row['sub_category'], '<br>';
-    echo 'Total access: ', $row['access_cnt'], '<br>';
+    echo 'Title: ', $row['Title'], '<br>';
+    echo 'Department: ', $row['DName'], '<br>';
+    echo 'Start date: ', $row['Year'], '<br>';
+    echo 'Description: ', $row['Description'], '<br>';
+    echo 'Sub-category: ', $row['CName'], '<br>';
+    echo 'Total access: ', $row['AccessCount'], '<br>';
     echo "<form action=", '"project_pg.php"', "method=", '"post"', "><button type=",
-            '"submit"', "name=", '"hello"', "value=", $row['project_id'], " class=",
+            '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=",
             '"btn-link"', ">Click here for more details.</button></form></center><br><br></div>";
 }
