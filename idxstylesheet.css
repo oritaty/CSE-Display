@@ -115,7 +115,7 @@ input:checked + .slider:before {
   margin-bottom: 1cm;
 }
 
-.project_pic {
+.project_artifacts {
   text-align: center;
 }
 
@@ -127,17 +127,18 @@ input:checked + .slider:before {
   text-align: center;
 }
 
-/*Works only with firefox.*/
 .slick-prev {
-    left: 300px !important;
-    background: red; /*to notice it, is white*/
+  left: 300px !important;
+  background: lightgray; /*to notice it, is white*/
+  height: 150px;
 }
 .slick-next {
-    right: 300px !important;
-    background: red; /*to notice it, is white*/
+  right: 300px !important;
+  background: lightgray; /*to notice it, is white*/
+  height: 150px;
 }
 
 .slick-prev:before, .slick-next:before{
-    color: black;
-    left: -80px;
+  color: black;
+  /*left: -80px;*/
 }

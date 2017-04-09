@@ -17,8 +17,8 @@ $sql3 = "SELECT DISTINCT Name FROM Category";
 $sql4 = "SELECT DISTINCT User.Name, User.MiamiId
          FROM User, UserType
          WHERE User.UserTypeId = UserType.Id AND
-               User.Name <> '' AND
-               User.MiamiId <> '' AND
+               User.Name <> '' AND User.Name IS NOT NULL AND
+               User.MiamiId <> '' AND User.MiamiId IS NOT NULL AND
                UserType.Name <> 'Admin'";
 
 $years = $conn->query($sql1);
@@ -119,18 +119,16 @@ $students = $conn->query($sql4);
     <h2><b><l>Search Result: </l></b></h2>
     <?php
     $sql = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
-                         Project.AccessCount, Project.Description,
-                         Category.Name AS CName, Department.Name AS DName,
-                         Artifact.fileName
-            FROM Project, Category, Department, ProjectDepartment, Artifact,
-                 ProjectArtifact, ArtifactType
-            WHERE Project.CategoryId = Category.Id AND
-                  Project.Id = ProjectDepartment.ProjectId AND
-                  ProjectDepartment.DepartmentId = Department.Id AND
-                  Project.Id = ProjectArtifact.ProjectId AND
-                  ProjectArtifact.ArtifactId = Artifact.Id AND
-                  Artifact.TypeId = ArtifactType.Id AND
-                  ArtifactType.Name = 'IMAGE'";
+                            Project.AccessCount, Project.Description,
+                            Category.Name AS CName, Department.Name AS DName,
+                            Artifact.fileName
+            FROM Project JOIN Category ON Project.CategoryId = Category.Id
+                         JOIN ProjectDepartment ON Project.Id = ProjectDepartment.ProjectId
+                         JOIN Department ON ProjectDepartment.DepartmentId = Department.Id
+                         JOIN ProjectArtifact ON Project.Id = ProjectArtifact.ProjectId
+                         JOIN Artifact ON ProjectArtifact.ArtifactId = Artifact.Id
+                         JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
+            WHERE ArtifactType.Name = 'IMAGE'";
     $toBeDisplayed = false;
 
     if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
@@ -156,8 +154,8 @@ $students = $conn->query($sql4);
         if ($department != "All") {
             $sql = $sql."\nAND Department.Name = '".$department."'";
         }
-        if ($person != "All") {
-            // Do something
+        if ($person != "All" && strpos($person, " (")) {
+            //$tok = explode(" (", $person);
         }
         $toBeDisplayed = true;
     }
@@ -174,7 +172,7 @@ $students = $conn->query($sql4);
                 echo 'Description: ', $row['Description'], '<br>';
                 echo 'Sub-category: ', $row['CName'], '<br>';
                 echo 'Total access: ', $row['AccessCount'], '<br>';
-                echo "<form action=", '"project_pg.php"', "method=", '"post"', "><button type=",
+                echo "<form action=", '"project.php"', "method=", '"post"', "><button type=", 
                         '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=",
                         '"btn-link"', ">Go see the details.</button></form><br><br>";
             }

@@ -1,9 +1,7 @@
 <?php
 function getConnection($servername = 'localhost', $username = 'root',
         $password = '', $dbname = 'ResearchDisplayDb') {
-    // Create connection.
     $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection.
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
@@ -26,7 +24,7 @@ function getTotalProjects() {
     return $row['Total'];
 }
 
-// project_pg.php.
+// project.php.
 function getRecommendations($id) {
     $conn = getConnection();
     if (getTotalProjects() < 3) {
@@ -67,7 +65,6 @@ function getRecommendations($id) {
     if ($count < 3) {
         echo "You need to allocate more project entries into the Database.";
         exit();
-        return $arr;
     }
     return $arr;
 }

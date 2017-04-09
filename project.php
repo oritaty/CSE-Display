@@ -19,7 +19,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello') != '') {
+if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello') !== '') {
     $id = filter_input(INPUT_POST, 'hello');
     $sql0 = "UPDATE Project SET AccessCount = AccessCount + 1 WHERE Id = ". $id;
     $conn->query($sql0);
@@ -41,7 +41,7 @@ if ($toBeDisplayed) {
                   Project.Id = ProjectDepartment.ProjectId AND
                   ProjectDepartment.DepartmentId = Department.Id AND
                   Project.Id = ".$id. " LIMIT 1";
-    $sqlCommon = "SELECT DISTINCT Artifact.fileName
+    $sqlCommon = "SELECT DISTINCT Artifact.fileName, ArtifactType.Name AS TName
                   FROM Project, Artifact, ArtifactType, ProjectArtifact
                   WHERE Project.Id = ".$id." AND
                         Project.Id = ProjectArtifact.ProjectId AND
@@ -69,8 +69,8 @@ $sql4 = "SELECT DISTINCT Name FROM Category";
 $sql5 = "SELECT DISTINCT User.Name, User.MiamiId
          FROM User, UserType
          WHERE User.UserTypeId = UserType.Id AND
-               User.Name <> '' AND
-               User.MiamiId <> '' AND
+               User.Name <> '' AND User.Name IS NOT NULL AND
+               User.MiamiId <> '' AND User.MiamiId IS NOT NULL AND
                UserType.Name <> 'Admin'";
 $years = $conn->query($sql2);
 $departments = $conn->query($sql3);
@@ -93,14 +93,14 @@ $conn->close();
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="slick/slick.js"></script>
-<link rel="stylesheet" href="idxstylesheet.css?2017218">
+<link rel="stylesheet" href="idxstylesheet.css?2017219">
 <head>
   <title>Individual project page.</title>
 </head>
 <body>
   <script>
     $(document).ready(function() {
-        $('#project_pic').slick({
+        $('#project_pics').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
             draggable: false,
@@ -135,47 +135,102 @@ $conn->close();
     </form>
   <!--</p>-->
   </div>
-  <div id="project_pic" style="text-align: center" width="400px">
+  <div class="project_artifacts" style="text-align: center" >
+    <?php
+    function getArtifactType($artifact) {
+        try {
+            $rtn = $artifact['TName'];
+            return $rtn;
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+            exit();
+        }
+    }
+
+    function displayPics($pics) {
+        // Every project must have at least one picture.
+        assert($pics->num_rows >= 1);
+        echo '<div id="project_pics">';
+        while ($row = $pics->fetch_assoc()) {
+            assert(getArtifactType($row) === 'IMAGE');
+            echo '<div><center><img src="pics/'.$row['fileName'].'" alt="'.
+                    $row['fileName'].'" style="width:450px;height:auto"/></center></div>';
+        }
+        echo '</div>';
+    }
+
+    // Slick slider can't handle pdf file.
+    function displayReports($reports) {
+        if ($reports->num_rows < 1) {
+            echo '<div><h2>No contents to be displayed.<h2></div>';
+            return;
+        }
+        while ($row = $reports->fetch_assoc()) {
+            switch(getArtifactType($row)) {
+                case 'PDF':
+                    echo '<div><center><embed src="reports/'.$row['fileName'].
+                            '" width="700px" height="800px" /></center></div>';
+                    break;
+                case 'POWERPOINT':
+                    break;
+                case 'TEXT':
+                    break;
+                default:
+                    // Error.
+                    break;
+            }
+        }
+    }
+
+    function displayVideos($videos) {
+        if ($videos->num_rows < 1) {
+            echo '<div><h2>No contents to be displayed.<h2></div>';
+            return;
+        }
+        while ($row = $videos->fetch_assoc()) {
+            switch(getArtifactType($row)) {
+                case 'VIDEO_FILE':
+                    echo '<div><center><video width="600" controls><source src="videos/'.
+                        $row['fileName'].'"type="video/mp4"></video></center></div>';
+                    break;
+                case 'VIDEO_LINK':
+                    /*
+                    echo '<iframe src="videos/'.$row['fileName'].
+                        '"width="560" height="315" frameborder="0" allowfullscreen></iframe>';
+                     */
+                    break;
+                default:
+                    // Error.
+                    break;
+            }
+        }
+    }
+    ?>
     <?php
     if ($proj != NULL && $media != NULL) {
         switch($media) {
             case 1:
-                if ($videos->num_rows < 1) {
-                    echo '<div><h2>No contents to be displayed.<h2></div>';
-                } else {
-                    while ($row = $videos->fetch_assoc()) {
-                        echo '<div><center><video width="600" controls><source src="videos/'.
-                            $row['fileName'].'"type="video/mp4"></video></center></div>';
-                    }
-                }
+                displayVideos($videos);
                 break;
             case 2:
-                // Every project must have at least one picture.
-                while ($row = $pics->fetch_assoc()) {
-                    echo '<div><center><img src="pics/'.$row['fileName'].'" alt="'.$row['fileName'].
-                        '" style="width:450px;height:auto"/></center></div>';
-                }
-            break;
+                displayPics($pics);
+                break;
             case 3:
-                if ($reports->num_rows < 1) {
-                    echo '<div><h2>No contents to be displayed.<h2></div>';
-                } else {
-                    while ($row = $reports->fetch_assoc()) {
-                        echo '<div><center><embed src="reports/'.$row['fileName'].
-                            '" width="800px" height="1000px /></center></div>';
-                    }
-                }
+                displayReports($reports);
                 break;
             default:
+                echo "You shouldn't reach this line.";
+                exit();
                 break;
         }
     } else {
         // Need to be tested.
+        echo '<div id="project_pics">';
         while ($row = $pics->fetch_assoc()) {
             echo '<div><img src="pics/', $row['fileName'].'" alt="'.$row['fileName'].
                 '" style="width:450px;height:auto;margin: 0 auto"/><br></div>';
-            //echo $row['fileName'];
         }
+        echo '</div>';
     }
     ?>
   </div>
@@ -227,7 +282,7 @@ $conn->close();
           <?php
           echo '<option>All</option>';
           while ($row = $students->fetch_assoc()) {
-              echo '<option>' . $row['Name'] . ' (' . $row['MiamiId'] . ')</option>';
+              echo '<option>'.$row['Name'].' ('. $row['MiamiId'].')</option>';
           }
           ?>
       </select>
@@ -239,7 +294,7 @@ $conn->close();
           <?php
           echo '<option>All</option>';
           while ($row = $categories->fetch_assoc()) {
-              echo '<option>' . $row['Name'] . '</option>';
+              echo '<option>'.$row['Name'].'</option>';
           }
           ?>
       </select>
@@ -251,7 +306,7 @@ $conn->close();
           <?php
           echo '<option>All</option>';
           while ($row = $departments->fetch_assoc()) {
-              echo '<option>' . $row['Name'] . '</option>';
+              echo '<option>'.$row['Name'].'</option>';
           }
           ?>
       </select>

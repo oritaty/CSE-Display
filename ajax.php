@@ -33,7 +33,7 @@ $sql = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
                      JOIN Artifact ON ProjectArtifact.ArtifactId = Artifact.Id
                      JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
         WHERE ArtifactType.Name = 'IMAGE' ";
-$sqlRecent = $sql."\nORDER BY Project.YEAR DESC LIMIT 5";
+$sqlRecent = $sql."\nORDER BY Project.Year DESC LIMIT 5";
 $sqlPopular = $sql."\nORDER BY Project.AccessCount DESC LIMIT 5";
 $mostRecent = $conn->query($sqlRecent);
 $mostPopular = $conn->query($sqlPopular);
@@ -56,7 +56,7 @@ while ($row = $target->fetch_assoc()) {
     echo 'Description: ', $row['Description'], '<br>';
     echo 'Sub-category: ', $row['CName'], '<br>';
     echo 'Total access: ', $row['AccessCount'], '<br>';
-    echo "<form action=", '"project_pg.php"', "method=", '"post"', "><button type=",
+    echo "<form action=", '"project.php"', "method=", '"post"', "><button type=",
             '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=",
             '"btn-link"', ">Click here for more details.</button></form></center><br><br></div>";
 }

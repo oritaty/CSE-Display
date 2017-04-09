@@ -68,6 +68,7 @@ $conn->close();
                 autoplay: true,
                 autoplaySpeed: 5000,
                 dots: true,
+                arrows: false,
                 pauseOnHover: false,
                 respondTo: 'slider'
             });
