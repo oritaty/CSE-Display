@@ -1,2 +1,2 @@
 # CSE-Display
-Prototype of prototype.
+Frontend page of research display.
