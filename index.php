@@ -1,19 +1,8 @@
+<?php include 'includes.php'?>
 <?php
-$servername = 'localhost';
-$username = 'root';
-$password = '';
-$dbname = 'ResearchDisplayDb';
-
-//Create connection.
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection.
-if ($conn->connect_error) {
-    die("Connection failed: ".$conn->connect_error);
-}
-
 $sql1 = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
-                         Project.AccessCount, Project.Description,
-                         Category.Name AS CName, Department.Name AS DName,
+                         Project.AccessCount, Project.Description, 
+                         Category.Name AS CName, Department.Name AS DName, 
                          Artifact.fileName
          FROM Project JOIN Category ON Project.CategoryId = Category.Id
                       JOIN ProjectDepartment ON Project.Id = ProjectDepartment.ProjectId
@@ -21,36 +10,33 @@ $sql1 = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
                       JOIN ProjectArtifact ON Project.Id = ProjectArtifact.ProjectId
                       JOIN Artifact ON ProjectArtifact.ArtifactId = Artifact.Id
                       JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
-         WHERE ArtifactType.Name = 'IMAGE'
+         WHERE ArtifactType.Name = 'IMAGE' 
          ORDER BY Project.YEAR DESC LIMIT 5";
-$sql2 = "SELECT DISTINCT YEAR(YEAR) AS Year FROM Project";
-$sql3 = "SELECT DISTINCT Name FROM Department";
-$sql4 = "SELECT DISTINCT Name FROM Category";
-$sql5 = "SELECT DISTINCT User.Name, User.MiamiId
-         FROM User, UserType
-         WHERE User.UserTypeId = UserType.Id AND
-               User.Name <> '' AND
-               User.MiamiId <> '' AND
-               UserType.Name <> 'Admin'";
-
-$mostRecent = $conn->query($sql1);
-$years = $conn->query($sql2);
-$departments = $conn->query($sql3);
-$categories = $conn->query($sql4);
-$students = $conn->query($sql5);
-$conn->close();
+$projectDb = new ProjectDb();
+$mostRecent = $projectDb->getQueryResult($sql1);
+$years = $projectDb->getYears();
+$departments = $projectDb->getDepartments();
+$categories = $projectDb->getCategories();
+$students = $projectDb->getStudents();
+$projectDb->closeConnection();
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8"/>
-        <link rel="stylesheet" href="idxstylesheet.css?2017219">
-        <!-- Copyright 2017 https://github.com/kenwheeler/slick -->
-        <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-        <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="/lib/w3.css">
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-        <script type="text/javascript" src="slick/slick.min.js"></script>
+        <!-- Copyright 2017 https://github.com/kenwheeler/slick -->
+        <!-- Get the source files from web.-->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+        <!-- Get the source files from internal link
+        <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+        <script type="text/javascript" src="slick/slick.js"></script> -->
+        <link rel="stylesheet" href="idxstylesheet.css?2017219">
         <title>Prototype of prototype</title>
     </head>
     <body>
@@ -92,7 +78,7 @@ $conn->close();
                 if (counter % 2 === 0) {
                     send = 'popular';
                 } else {
-                    send = 'recent';
+                    send = 'recent'; 
                 }
 
                 var xmlhttp;
@@ -134,7 +120,7 @@ $conn->close();
         <div id="slides">
             <?php
             while($row = $mostRecent->fetch_assoc()) {
-                echo '<div><center><img src="pics/', $row['fileName'], '" alt="', $row['pic_url'],
+                echo '<div><center><img src="pics/', $row['fileName'], '" alt="', $row['pic_url'], 
                         '" style="width:auto;height:350px;margin-top:1cm" /><br>';
                 echo "<h2>Description:</h2>";
                 echo 'Title: ', $row['Title'], '<br>';
@@ -143,8 +129,8 @@ $conn->close();
                 echo 'Description: ', $row['Description'], '<br>';
                 echo 'Sub-category: ', $row['CName'], '<br>';
                 echo 'Total access: ', $row['AccessCount'], '<br>';
-                echo "<form action=", '"project.php"', "method=", '"post"', "><button type=",
-                        '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=",
+                echo "<form action=", '"project.php"', "method=", '"post"', "><button type=", 
+                        '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=", 
                         '"btn-link"', ">Click here for more details.</button></form></center><br><br></div>";
             }
             ?>

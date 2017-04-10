@@ -1,30 +1,10 @@
+<?php include 'includes.php'; ?>
 <?php
-$servername = 'localhost';
-$username = 'root';
-$password = '';
-$dbname = 'ResearchDisplayDb';
-
-//Create connection.
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection.
-if ($conn->connect_error) {
-    die("Connection failed: ".$conn->connect_error);
-}
-
-$sql1 = "SELECT DISTINCT YEAR(YEAR) AS Year FROM Project";
-$sql2 = "SELECT DISTINCT Name FROM Department";
-$sql3 = "SELECT DISTINCT Name FROM Category";
-$sql4 = "SELECT DISTINCT User.Name, User.MiamiId
-         FROM User, UserType
-         WHERE User.UserTypeId = UserType.Id AND
-               User.Name <> '' AND User.Name IS NOT NULL AND
-               User.MiamiId <> '' AND User.MiamiId IS NOT NULL AND
-               UserType.Name <> 'Admin'";
-
-$years = $conn->query($sql1);
-$departments = $conn->query($sql2);
-$categories = $conn->query($sql3);
-$students = $conn->query($sql4);
+$projectDb = new ProjectDb();
+$years = $projectDb->getYears();
+$departments = $projectDb->getDepartments();
+$categories = $projectDb->getCategories();
+$students = $projectDb->getStudents();
 ?>
 <!DOCTYPE html>
 <html>
@@ -119,8 +99,8 @@ $students = $conn->query($sql4);
     <h2><b><l>Search Result: </l></b></h2>
     <?php
     $sql = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
-                            Project.AccessCount, Project.Description,
-                            Category.Name AS CName, Department.Name AS DName,
+                            Project.AccessCount, Project.Description, 
+                            Category.Name AS CName, Department.Name AS DName, 
                             Artifact.fileName
             FROM Project JOIN Category ON Project.CategoryId = Category.Id
                          JOIN ProjectDepartment ON Project.Id = ProjectDepartment.ProjectId
@@ -161,10 +141,10 @@ $students = $conn->query($sql4);
     }
 
     if ($toBeDisplayed) {
-        $result = $conn->query($sql);
+        $result = $projectDb->getQueryResult($sql);
         if ($result != NULL) {
             while($row = $result->fetch_assoc()) {
-                echo '<img src="pics/', $row['fileName'], '" alt="', $row['pic_url'],
+                echo '<img src="pics/', $row['fileName'], '" alt="', $row['pic_url'], 
                         '" style="width:auto;height:180px" /><br>';
                 echo 'Title: ', $row['Title'], '<br>';
                 echo 'Department: ', $row['DName'], '<br>';
@@ -173,12 +153,12 @@ $students = $conn->query($sql4);
                 echo 'Sub-category: ', $row['CName'], '<br>';
                 echo 'Total access: ', $row['AccessCount'], '<br>';
                 echo "<form action=", '"project.php"', "method=", '"post"', "><button type=", 
-                        '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=",
+                        '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=", 
                         '"btn-link"', ">Go see the details.</button></form><br><br>";
             }
         }
     }
-    $conn->close();
+    $projectDb->closeConnection();
     ?>
   </div>
   <div class="bottom_space" style="height:100px"></div>
