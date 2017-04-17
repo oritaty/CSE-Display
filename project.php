@@ -1,5 +1,6 @@
 <?php include 'includes.php'; ?>
 <?php
+
 $id = NULL;
 $media = NULL;
 $proj = NULL;
@@ -22,8 +23,14 @@ if (isset($_POST['hello']) && $_POST['hello'] !== '') {
     $id = $_POST['projectid'];
     $media = $_POST['media'];
     $toBeDisplayed = true;
-} else {
-    // Need error handling.
+} else { //display newest project
+    $query = $projectDb->getQueryResult("SELECT * FROM Project ORDER BY Project.Id DESC");
+    $row= $query->fetch_assoc();
+    $id = $row["Id"];
+    echo $id;
+    $sql0 = "UPDATE Project SET AccessCount = AccessCount + 1 WHERE Id = ". $id;
+    $projectDb->getQueryResult($sql0);
+    $toBeDisplayed = true;
 }
 
 if ($toBeDisplayed) {
