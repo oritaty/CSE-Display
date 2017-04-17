@@ -27,7 +27,6 @@ if (isset($_POST['hello']) && $_POST['hello'] !== '') {
     $query = $projectDb->getQueryResult("SELECT * FROM Project ORDER BY Project.Id DESC");
     $row= $query->fetch_assoc();
     $id = $row["Id"];
-    echo $id;
     $sql0 = "UPDATE Project SET AccessCount = AccessCount + 1 WHERE Id = ". $id;
     $projectDb->getQueryResult($sql0);
     $toBeDisplayed = true;
