@@ -52,6 +52,13 @@ class ProjectDb {
         }
     }
 
+    function getProjectTitle($id) {
+        $sql = "SELECT DISTINCt Project.Title FROM Project WHERE Project.Id=".$id;
+        $result = $this->getQueryResult($sql);
+       $row = $result->fetch_assoc();
+       return $row['Title'];
+   }
+
     private function getTotalProjects() {
         $sql = "SELECT COUNT(*) As Total FROM Project";
         $result = $this->getQueryResult($sql);
