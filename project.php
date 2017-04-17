@@ -13,7 +13,7 @@ $departments = $projectDb->getDepartments();
 $categories = $projectDb->getCategories();
 $students = $projectDb->getStudents();
 
-if (filter_input(INPUT_POST, 'hello') != NULL && filter_input(INPUT_POST, 'hello') !== '') {
+if (isset($_POST['hello']) && $_POST['hello'] !== '') {
     $id = filter_input(INPUT_POST, 'hello');
     $sql0 = "UPDATE Project SET AccessCount = AccessCount + 1 WHERE Id = ". $id;
     $projectDb->getQueryResult($sql0);
@@ -127,76 +127,69 @@ $projectDb->closeConnection();
         }
     }
     
-    function displayPics($pics) {
+    // For pictures.
+    function displayMultipleArtifacts($artifacts) {
         // Every project must have at least one picture.
-        assert($pics->num_rows >= 1);
+        assert($artifacts->num_rows >= 1);
         echo '<div id="project_pics">';
-        while ($row = $pics->fetch_assoc()) {
+        while ($row = $artifacts->fetch_assoc()) {
             assert(getArtifactType($row) === 'IMAGE');
             echo '<div><center><img src="pics/'.$row['fileName'].'" alt="'.
-                    $row['fileName'].'" style="width:450px;height:auto"/></center></div>';
+                    $row['fileName'].'" style="width:auto;height:450px"/><br>
+                    </center></div>';
         }
         echo '</div>';
     }
     
-    // Slick slider can't handle pdf file.
-    function displayReports($reports) {
-        if ($reports->num_rows < 1) {
+    // For reports and videos.
+    function displaySingleArtifact($artifact) {
+        if ($artifact->num_rows < 1) {
             echo '<div><h2>No contents to be displayed.<h2></div>';
             return;
         }
-        while ($row = $reports->fetch_assoc()) {
-            switch(getArtifactType($row)) {
-                case 'PDF':
-                    echo '<div><center><embed src="reports/'.$row['fileName'].
-                            '" width="700px" height="800px" /></center></div>';
-                    break;
-                case 'POWERPOINT':
-                    break;
-                case 'TEXT':
-                    break;
-                default:
-                    // Error.
-                    break;
-            }
-        }
-    }
-    
-    function displayVideos($videos) {
-        if ($videos->num_rows < 1) {
-            echo '<div><h2>No contents to be displayed.<h2></div>';
-            return;
-        }
-        while ($row = $videos->fetch_assoc()) {
-            switch(getArtifactType($row)) {
-                case 'VIDEO_FILE':
-                    echo '<div><center><video width="600" controls><source src="videos/'.
-                        $row['fileName'].'"type="video/mp4"></video></center></div>';
-                    break;
-                case 'VIDEO_LINK':
-                    /*
-                    echo '<iframe src="videos/'.$row['fileName'].
-                        '"width="560" height="315" frameborder="0" allowfullscreen></iframe>';
-                     */
-                    break;
-                default:
-                    // Error.
-                    break;
-            }
+        $row = $artifact->fetch_assoc();
+        switch (getArtifactType($row)) {
+            case 'VIDEO_FILE':
+                echo '<div><center><video width="600" controls><source src="videos/'.
+                     $row['fileName'].'"type="video/mp4"></video></center></div>';
+                break;
+            case 'VIDEO_LINK':
+                echo '<iframe src="'.$row['Link'].
+                     '" width="560" height="315" frameborder="0" allowfullscreen>
+                     </iframe>';
+                break;
+                /* Comvert to embed URL.
+                echo '<iframe src="https://www.youtube.com/embed/XGSy3_Czz8k
+                     "width="560" height="315" frameborder="0" allowfullscreen>
+                     </iframe>';
+                 */
+            case 'PDF':
+                echo '<div><center><embed src="reports/'.$row['fileName'].
+                     '" width="700px" height="800px" /></center></div>';
+                break;
+            case 'POWERPOINT':
+                echo '<div><center><iframe height="" width="" src="reports/'.
+                     $row['fileName'].'"></iframe></center></div>';
+                break;
+            case 'TEXT':
+                break;
+            default: 
+                echo "Shouldn't reach this line.";
+                exit();
+                break;
         }
     }
     ?>
     <?php
     if ($proj != NULL && $media != NULL) {
         switch($media) {
-            case 1: displayVideos($videos); break;
-            case 2: displayPics($pics); break;
-            case 3: displayReports($reports); break;
+            case 1: displaySingleArtifact($videos); break;
+            case 2: displayMultipleArtifacts($pics); break;
+            case 3: displaySingleArtifact($reports); break;
             default: echo "Shouldn't reach this line."; exit(); break;
         }
     } else {
-        // Need to be tested.
-        displayPics($pics);
+        displayMultipleArtifacts($pics);
     }
     ?>
   </div>

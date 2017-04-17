@@ -120,7 +120,7 @@ $projectDb->closeConnection();
         <div id="slides">
             <?php
             while($row = $mostRecent->fetch_assoc()) {
-                echo '<div><center><img src="pics/', $row['fileName'], '" alt="', $row['pic_url'], 
+                echo '<div><center><img src="pics/', $row['fileName'], '" alt="pics/', $row['fileName'], 
                         '" style="width:auto;height:350px;margin-top:1cm" /><br>';
                 echo "<h2>Description:</h2>";
                 echo 'Title: ', $row['Title'], '<br>';
