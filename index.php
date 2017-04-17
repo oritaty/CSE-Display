@@ -1,6 +1,6 @@
 <?php include 'includes.php'?>
 <?php
-$sql1 = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
+$sql1 = "SELECT Project.Id, Project.Title, Project.Year,
                          Project.AccessCount, Project.Description, 
                          Category.Name AS CName, Department.Name AS DName, 
                          Artifact.fileName
@@ -10,7 +10,8 @@ $sql1 = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
                       JOIN ProjectArtifact ON Project.Id = ProjectArtifact.ProjectId
                       JOIN Artifact ON ProjectArtifact.ArtifactId = Artifact.Id
                       JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
-         WHERE ArtifactType.Name = 'IMAGE' 
+         WHERE ArtifactType.Name = 'IMAGE'
+         GROUP BY Project.Id
          ORDER BY Project.YEAR DESC LIMIT 5";
 $projectDb = new ProjectDb();
 $mostRecent = $projectDb->getQueryResult($sql1);
