@@ -47,11 +47,11 @@ if ($toBeDisplayed) {
                         Project.Id = ProjectArtifact.ProjectId AND
                         ProjectArtifact.ArtifactId = Artifact.Id AND
                         Artifact.TypeId = ArtifactType.Id";
-    $sqlPics = $sqlCommon."\nAND ArtifactType.Name = 'IMAGE'";
+    $sqlPics = $sqlCommon."\nAND ArtifactType.Name = 'IMAGE'\nGROUP BY Project.Id";
     $sqlVideos = $sqlCommon."\nAND (ArtifactType.Name = 'VIDEO_FILE' OR
-                              ArtifactType.Name = 'VIDEO_LINK')";
+                              ArtifactType.Name = 'VIDEO_LINK')\nGROUP BY Project.Id";
     $sqlReports = $sqlCommon."\nAND (ArtifactType.Name = 'PDF' OR
-                              ArtifactType.Name = 'POWERPOINT')";
+                              ArtifactType.Name = 'POWERPOINT')\nGROUP BY Project.Id";
     $pics = $projectDb->getQueryResult($sqlPics);
     $videos = $projectDb->getQueryResult($sqlVideos);
     $reports = $projectDb->getQueryResult($sqlReports);
@@ -99,7 +99,7 @@ if ($toBeDisplayed) {
 </script>
 <a href="index.php"><u>Home</u></a>
 <div class="header">
-    <h1 class="header">CSE Display Project</h1>
+    <h1 class="header">CEC Display Project</h1>
 </div>
 <div class="searchbox">
     <form method="post" action="search.php">
@@ -112,11 +112,11 @@ if ($toBeDisplayed) {
     <!--<p>-->
     <form action="" method="post">
         <button class="videoButton" type="submit" name="media" value="1"
-                style="width:100px;height:50px;margin-right:1.5cm">Videos</button>
+                style="width:100px;height:50px;margin-right:9%;margin-left:2%">Videos</button>
         <button class="picButton" type="submit" name="media" value="2"
-                style="width:100px;height:50px;margin-right:1.5cm;margin-left:1.5cm">Pictures</button>
+                style="width:100px;height:50px;margin-right:9%;margin-left:9%">Pictures</button>
         <button class="reportButton" type="submit" name="media" value="3"
-                style="width:100px;height:50px;margin-left:1.5cm">Reports</button>
+                style="width:100px;height:50px;margin-right:2%;margin-left:9%">Reports</button>
         <input type="hidden" name="projectid" value="<?php echo $id ?>">
     </form>
     <!--</p>-->
@@ -200,15 +200,16 @@ if ($toBeDisplayed) {
     ?>
 </div>
 <div class="project_description">
-    <h2><b>Metadata: </b></h2>
+    <!--<h2><b>Metadata: </b></h2>-->
     <?php
     if ($proj != NULL) {
-        echo 'Title: ', $proj['Title'], '<br>';
+		echo "<h2>".$proj['Title']."</h2><br>";
+        //echo 'Title: ', $proj['Title'], '<br>';
         echo 'Department: ', $proj['DName'], '<br>';
         echo 'Start date: ', $proj['Year'], '<br>';
-        echo 'Description: ', $proj['Description'], '<br>';
-        echo 'Sub-Category: ', $proj['CName'], '<br>';
-        echo 'Total access: ', $proj['AccessCount'], '<br>';
+        echo $proj['Description'], '<br>';
+        echo 'Sub-Category: ', $proj['CName'], '<br><br>';
+        //echo 'Total access: ', $proj['AccessCount'], '<br>';
     }
     ?>
 </div>
@@ -287,20 +288,20 @@ if ($toBeDisplayed) {
 
     <form action="" method="post">
         <button type="submit" class="recButton1" name="hello" value="<?php echo $recFirst ?>"
-                style="width:150px;height:75px;margin-right:2cm"><?php echo $projectDb->getProjectTitle($recFirst)?></button>
+                style="width:150px;height:75px;margin-right:4%;margin-left:4%"><?php echo $projectDb->getProjectTitle($recFirst)?></button>
         <button type="submit" class="recButton2" name="hello" value="<?php echo $recSecond ?>"
-                style="width:150px;height:75px;margin-right:2cm;margin-left:2cm"><?php echo $projectDb->getProjectTitle($recSecond)?></button>
+                style="width:150px;height:75px;margin-right:4%;margin-left:4%"><?php echo $projectDb->getProjectTitle($recSecond)?></button>
         <button type="submit" class="recButton3" name="hello" value="<?php echo $recThird ?>"
-                style="width:150px;height:75px;margin-left:2cm"><?php echo $projectDb->getProjectTitle($recThird)?></button>
+                style="width:150px;height:75px;margin-right:4%;margin-left:4%"><?php echo $projectDb->getProjectTitle($recThird)?></button>
     </form>
 </div>
 <br>
 <div class="bottom_space" style="height:100px"></div>
 <div class="footer">
-    <h2>This is footer.</h2>
-    CSE Webpage:
-    <a href="http://miamioh.edu/cec/academics/departments/cse/index.html/">
-        http://miamioh.edu/cec/academics/departments/cse/index.html</a>
+    <h3>Check out the link below for more details about the College of Engineering and Computing!</h3>
+    CEC Webpage:
+    <a href="http://miamioh.edu/cec/">
+        http://miamioh.edu/cec/</a>
 </div>
 </body>
 </html>

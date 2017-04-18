@@ -17,7 +17,7 @@ $students = $projectDb->getStudents();
 <body>
   <a href="index.php"><u>Home</u></a>
   <div class="header">
-    <h1 class="header">CSE Display Project</h1>
+    <h1 class="header">CEC Display Project</h1>
   </div>
   <div class="searchbox">
     <form method="post" action="search.php">
@@ -96,9 +96,9 @@ $students = $projectDb->getStudents();
   </div>
   <div class="searchresults">
     <!--<a href='index.php?hello=true'>Run PHP Function</a>Test-->
-    <h2><b><l>Search Result: </l></b></h2>
+    <h2><b><l>Search Results: </l></b></h2>
     <?php
-    $sql = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
+    $sql = "SELECT Project.Id, Project.Title, Project.Year,
                             Project.AccessCount, Project.Description, 
                             Category.Name AS CName, Department.Name AS DName, 
                             Artifact.fileName
@@ -108,7 +108,8 @@ $students = $projectDb->getStudents();
                          JOIN ProjectArtifact ON Project.Id = ProjectArtifact.ProjectId
                          JOIN Artifact ON ProjectArtifact.ArtifactId = Artifact.Id
                          JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
-            WHERE ArtifactType.Name = 'IMAGE'";
+            WHERE ArtifactType.Name = 'IMAGE'
+			GROUP BY Project.Id";
     $toBeDisplayed = false;
 
     if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
@@ -146,15 +147,15 @@ $students = $projectDb->getStudents();
             while($row = $result->fetch_assoc()) {
                 echo '<img src="pics/', $row['fileName'], '" alt="', $row['pic_url'], 
                         '" style="width:auto;height:180px" /><br>';
-                echo 'Title: ', $row['Title'], '<br>';
+                echo '<strong>', $row['Title'], '</strong><br>';
                 echo 'Department: ', $row['DName'], '<br>';
                 echo 'Start date: ', $row['Year'], '<br>';
                 echo 'Description: ', $row['Description'], '<br>';
                 echo 'Sub-category: ', $row['CName'], '<br>';
-                echo 'Total access: ', $row['AccessCount'], '<br>';
+                //echo 'Total access: ', $row['AccessCount'], '<br>';
                 echo "<form action=", '"project.php"', "method=", '"post"', "><button type=", 
                         '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=", 
-                        '"btn-link"', ">Go see the details.</button></form><br><br>";
+                        '"btn-link"', ">Go see the details</button></form><br><br>";
             }
         }
     }
@@ -163,10 +164,10 @@ $students = $projectDb->getStudents();
   </div>
   <div class="bottom_space" style="height:100px"></div>
   <div class="footer">
-    <h2>This is footer.</h2>
-    CSE Webpage:
-    <a href="http://miamioh.edu/cec/academics/departments/cse/index.html/">
-      http://miamioh.edu/cec/academics/departments/cse/index.html</a>
+    <h3>Check out the link below for more details about the College of Engineering and Computing!</h3>
+    CEC Webpage:
+    <a href="http://miamioh.edu/cec/">
+      http://miamioh.edu/cec/
   </div>
 </body>
 </html>

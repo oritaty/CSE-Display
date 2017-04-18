@@ -63,7 +63,7 @@ $projectDb->closeConnection();
         </script>
         <a href="index.php"><u>Home</u></a>
         <div class="header">
-            <h1 class="header">CSE Display Project</h1>
+            <h1 class="header">CEC Display Project</h1>
         </div>
         <div class="searchbox">
             <form method="post" action="search.php">
@@ -84,7 +84,7 @@ $projectDb->closeConnection();
 
                 var xmlhttp;
                 try {
-                    // Chtome, Firefox, Safari etc.
+                    // Chrome, Firefox, Safari etc.
                     xmlhttp = new XMLHttpRequest();
                 } catch(e) {
                     try {
@@ -123,13 +123,12 @@ $projectDb->closeConnection();
             while($row = $mostRecent->fetch_assoc()) {
                 echo '<div><center><img src="pics/', $row['fileName'], '" alt="pics/', $row['fileName'], 
                         '" style="width:auto;height:350px;margin-top:1cm" /><br>';
-                echo "<h2>Description:</h2>";
-                echo 'Title: ', $row['Title'], '<br>';
+                echo "<h2>".$row['Title']."</h2>";
                 echo 'Department: ', $row['DName'], '<br>';
-                echo 'Start date: ', $row['Year'], '<br>';
-                echo 'Description: ', $row['Description'], '<br>';
-                echo 'Sub-category: ', $row['CName'], '<br>';
-                echo 'Total access: ', $row['AccessCount'], '<br>';
+                //echo 'Start date: ', $row['Year'], '<br>';
+                echo $row['Description'], '<br>';
+                echo 'Sub-category: ', $row['CName'], '<br><br>';
+                //echo 'Total access: ', $row['AccessCount'], '<br>';
                 echo "<form action=", '"project.php"', "method=", '"post"', "><button type=", 
                         '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=", 
                         '"btn-link"', ">Click here for more details.</button></form></center><br><br></div>";
@@ -208,10 +207,10 @@ $projectDb->closeConnection();
         </div>
         <div class="bottom_space" style="height:100px"></div>
         <div class="footer">
-        <h2>This is footer.</h2>
-        CSE Webpage:
-        <a href="http://miamioh.edu/cec/academics/departments/cse/index.html/">
-        http://miamioh.edu/cec/academics/departments/cse/index.html</a>
+        <h3>Check out the link below for more details about the College of Engineering and Computing!</h3>
+        CEC Webpage:
+        <a href="http://miamioh.edu/cec/">
+        http://miamioh.edu/cec/</a>
         </div>
         <script>
         $(document).ready(function() {

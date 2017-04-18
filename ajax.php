@@ -12,7 +12,7 @@ if (isset($_REQUEST['req'])) {
 }
 
 $projectDb = new ProjectDb();
-$sql = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
+$sql = "SELECT Project.Id, Project.Title, Project.Year,
                         Project.AccessCount, Project.Description, 
                         Category.Name AS CName, Department.Name AS DName, 
                         Artifact.fileName
@@ -22,7 +22,8 @@ $sql = "SELECT DISTINCT Project.Id, Project.Title, Project.Year,
                      JOIN ProjectArtifact ON Project.Id = ProjectArtifact.ProjectId
                      JOIN Artifact ON ProjectArtifact.ArtifactId = Artifact.Id
                      JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
-        WHERE ArtifactType.Name = 'IMAGE' ";
+        WHERE ArtifactType.Name = 'IMAGE'
+		GROUP BY Project.Id ";
 $sqlRecent = $sql."\nORDER BY Project.Year DESC LIMIT 5";
 $sqlPopular = $sql."\nORDER BY Project.AccessCount DESC LIMIT 5";
 
