@@ -46,7 +46,8 @@ if ($toBeDisplayed) {
                   Project.Id = ProjectDepartment.ProjectId AND 
                   ProjectDepartment.DepartmentId = Department.Id AND 
                   Project.Id = ".$id. " LIMIT 1";
-    $sqlCommon = "SELECT DISTINCT Artifact.fileName, ArtifactType.Name AS TName
+    $sqlCommon = "SELECT DISTINCT Artifact.fileName, Artifact.Link, 
+                         ArtifactType.Name AS TName
                   FROM Project, Artifact, ArtifactType, ProjectArtifact
                   WHERE Project.Id = ".$id." AND
                         Project.Id = ProjectArtifact.ProjectId AND
@@ -165,15 +166,8 @@ if ($toBeDisplayed) {
                     $row['fileName'].'"type="video/mp4"></video></center></div>';
                 break;
             case 'VIDEO_LINK':
-                echo '<iframe src="'.$row['Link'].
-                    '" width="560" height="315" frameborder="0" allowfullscreen>
-                     </iframe>';
+                echo '<div><center>'.$row['Link'].'</center></div>';
                 break;
-            /* Comvert to embed URL.
-            echo '<iframe src="https://www.youtube.com/embed/XGSy3_Czz8k
-                 "width="560" height="315" frameborder="0" allowfullscreen>
-                 </iframe>';
-             */
             case 'PDF':
                 echo '<div><center><embed src="reports/'.$row['fileName'].
                     '" width="700px" height="800px" /></center></div>';
