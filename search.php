@@ -98,18 +98,16 @@ $students = $projectDb->getStudents();
     <!--<a href='index.php?hello=true'>Run PHP Function</a>Test-->
     <h2><b><l>Search Results: </l></b></h2>
     <?php
-    $sql = "SELECT Project.Id, Project.Title, Project.Year,
-                            Project.AccessCount, Project.Description, 
-                            Category.Name AS CName, Department.Name AS DName, 
-                            Artifact.fileName
+    $sql = "SELECT Project.Id, Project.Title, Project.Year, Project.AccessCount, 
+                   Project.Description, Category.Name AS CName, 
+                   Department.Name AS DName, Artifact.fileName
             FROM Project JOIN Category ON Project.CategoryId = Category.Id
                          JOIN ProjectDepartment ON Project.Id = ProjectDepartment.ProjectId
                          JOIN Department ON ProjectDepartment.DepartmentId = Department.Id
                          JOIN ProjectArtifact ON Project.Id = ProjectArtifact.ProjectId
                          JOIN Artifact ON ProjectArtifact.ArtifactId = Artifact.Id
                          JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
-            WHERE ArtifactType.Name = 'IMAGE'
-			GROUP BY Project.Id";
+            WHERE ArtifactType.Name = 'IMAGE'";
     $toBeDisplayed = false;
 
     if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
@@ -142,6 +140,7 @@ $students = $projectDb->getStudents();
     }
 
     if ($toBeDisplayed) {
+        $sql .= "\nGROUP BY Project.Id";
         $result = $projectDb->getQueryResult($sql);
         if ($result != NULL) {
             while($row = $result->fetch_assoc()) {
