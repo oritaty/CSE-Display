@@ -166,6 +166,15 @@ if ($toBeDisplayed) {
                     $row['fileName'].'"type="video/mp4"></video></center></div>';
                 break;
             case 'VIDEO_LINK':
+                /*
+                 * Embded youtube link example: 
+                 * 
+                 * <iframe width="560" height="315" 
+                 * src="https://www.youtube.com/embed/3JluqTojuME" 
+                 * frameborder="0" allowfullscreen></iframe>
+                 * 
+                 * You must change char length of Artifact.Link from 100 to 200.
+                 */
                 echo '<div><center>'.$row['Link'].'</center></div>';
                 break;
             case 'PDF':
@@ -282,16 +291,16 @@ if ($toBeDisplayed) {
 </div>
 <div class="recommendations">
     <h2><b>Recommended to you: </b></h2><br>
-
-
-
     <form action="" method="post">
         <button type="submit" class="recButton1" name="hello" value="<?php echo $recFirst ?>"
-                style="width:150px;height:75px;margin-right:4%;margin-left:4%"><?php echo $projectDb->getProjectTitle($recFirst)?></button>
+                style="width:150px;height:75px;margin-right:4%;margin-left:4%">
+                <?php echo $projectDb->getProjectTitle($recFirst)?></button>
         <button type="submit" class="recButton2" name="hello" value="<?php echo $recSecond ?>"
-                style="width:150px;height:75px;margin-right:4%;margin-left:4%"><?php echo $projectDb->getProjectTitle($recSecond)?></button>
+                style="width:150px;height:75px;margin-right:4%;margin-left:4%">
+                <?php echo $projectDb->getProjectTitle($recSecond)?></button>
         <button type="submit" class="recButton3" name="hello" value="<?php echo $recThird ?>"
-                style="width:150px;height:75px;margin-right:4%;margin-left:4%"><?php echo $projectDb->getProjectTitle($recThird)?></button>
+                style="width:150px;height:75px;margin-right:4%;margin-left:4%">
+                <?php echo $projectDb->getProjectTitle($recThird)?></button>
     </form>
 </div>
 <br>
