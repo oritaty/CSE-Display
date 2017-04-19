@@ -101,17 +101,17 @@ class ProjectDb {
         }
     }
     
-    private function getIdsFromQueryResult(&$arr, $result) {
-        $count = sizeof($arr);
-        while ($row = $result->fetch_assoc()) {
-            if ($count == NUM_OF_REC) {
-                break;
-            }
-            array_push($arr, (int) $row['Id']);
-            $count++;
-        }
-    }
-    
+   // private function getIdsFromQueryResult(&$arr, $result) {
+     //   $count = sizeof($arr);
+      //  while ($row = $result->fetch_assoc()) {
+      //      if ($count == NUM_OF_REC) {
+       //         break;
+        //    }
+        //    array_push($arr, (int) $row['Id']);
+       //     $count++;
+      //  }
+//}
+   
     //project.php
     function getRecommendations($id) {
         $this->checkNumOfEntries();
@@ -136,7 +136,19 @@ class ProjectDb {
                  $category['Name']."' ORDER BY Project.AccessCount DESC LIMIT ".
                  (NUM_OF_REC - sizeof($array));
         $result3 = $this->getQueryResult($sql3);
-        $this->getIdsFromQueryResult($array, $result3);
+        //$this->getIdsFromQueryResult($array, $result3);
+        
+        
+       //avoid pass-by-reference
+        $count = sizeof($array);
+        while ($row = $result3->fetch_assoc()) {
+            if ($count == NUM_OF_REC) {
+                break;
+            }
+            array_push($array, (int) $row['Id']);
+            $count++;
+        }
+        
         if (sizeof($array) < NUM_OF_REC) {
             echo "You need to allocate more project entries into the Database.";
             echo '<br>Number of recommendations: '.sizeof($array);
