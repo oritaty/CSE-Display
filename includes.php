@@ -127,7 +127,18 @@ class ProjectDb {
                  "' ORDER BY Project.AccessCount DESC LIMIT ".NUM_OF_REC;
         $array = array();
         $result2 = $this->getQueryResult($sql2);
-        $this->getIdsFromQueryResult($array, $result2);
+        // $this->getIdsFromQueryResult($array, $result2);
+        
+        //avoid pass-by-reference
+        $count = sizeof($array);
+        while ($row = $result2->fetch_assoc()) {
+            if ($count == NUM_OF_REC) {
+                break;
+            }
+            array_push($array, (int) $row['Id']);
+            $count++;
+        }
+        
         if (sizeof($array) == NUM_OF_REC) {
             return $array;
         }
@@ -139,7 +150,7 @@ class ProjectDb {
         //$this->getIdsFromQueryResult($array, $result3);
         
         
-       //avoid pass-by-reference
+        //avoid pass-by-reference
         $count = sizeof($array);
         while ($row = $result3->fetch_assoc()) {
             if ($count == NUM_OF_REC) {
