@@ -24,12 +24,17 @@ if (isset($_POST['hello']) && $_POST['hello'] !== '') {
     $media = $_POST['media'];
     $toBeDisplayed = true;
 } else { //display newest project
+    /*
     $query = $projectDb->getQueryResult("SELECT * FROM Project ORDER BY Project.Id DESC");
     $row= $query->fetch_assoc();
     $id = $row["Id"];
     $sql0 = "UPDATE Project SET AccessCount = AccessCount + 1 WHERE Id = ". $id;
     $projectDb->getQueryResult($sql0);
     $toBeDisplayed = true;
+    */
+    $projectDb->closeConnection();
+    header('Location: index.php');
+    exit();
 }
 
 if ($toBeDisplayed) {
