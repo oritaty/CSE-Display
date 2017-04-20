@@ -33,18 +33,22 @@ if ($displayRecent) {
     $target = $projectDb->getQueryResult($sqlPopular);
 }
 $projectDb->closeConnection();
-    
-while ($row = $target->fetch_assoc()) {
-    echo '<div><center><img src="pics/', $row['fileName'], '" alt="', $row['pic_url'], 
-            '" style="width:auto;height:350px;margin-top:1cm" /><br>';
-    echo "<h2>Description:</h2>";
-    echo 'Title: ', $row['Title'], '<br>';
-    echo 'Department: ', $row['DName'], '<br>';
-    echo 'Start date: ', $row['Year'], '<br>';
-    echo 'Description: ', $row['Description'], '<br>';
-    echo 'Sub-category: ', $row['CName'], '<br>';
-    echo 'Total access: ', $row['AccessCount'], '<br>';
-    echo "<form action=", '"project.php"', "method=", '"post"', "><button type=", 
-            '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=", 
-            '"btn-link"', ">Click here for more details.</button></form></center><br><br></div>";
+
+while($row = $target->fetch_assoc()) {
+    echo '<div class = "slide">';
+    echo '<div class="project-image-container"><img class="project-image" src="pics/', $row['fileName'], '" alt="pics/', $row['fileName'],
+    '"/><br></div>';
+
+    echo '<div class="project-details-container">';
+    echo '<div class="project-title">'.$row['Title'].'</div>';
+    echo '<div class="project-details"> Department: ', $row['DName'], '<br>';
+
+    echo $row['Description'], '<br>';
+    echo 'Sub-category: ', $row['CName'], '<br><br>';
+
+    echo '<form action=', '"project.php"', ' method=', '"post"','><button type=',
+    '"submit"', ' name=', '"hello"', ' value=', $row['Id'], ' class=',
+    '"btn-link"','>Click here for more details.</button></form><br><br></div></div>';
+    echo '</div>'; // Close slide box
 }
+?>
