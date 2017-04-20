@@ -1,28 +1,173 @@
-h1.header {
-  text-align: center;
-  color:crimson;
-  border: 3px solid darkgrey;
-  margin-top: -0.05cm;
+
+body {
+  background: url(http://www.miamioh.edu/_files/images/schools/backgrounds/bg.jpg) top left repeat !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
 }
 
-div.searchbox {
-  position: absolute;
-  right: 10px;
+select:hover {
+  cursor: pointer;
 }
 
-div.searchtab {
-  position: fixed;
-  background-color: white;
-  top: 140px;
-  left: 10px;
-  width: 220px;
+a {
+  color: #007b89;
+  text-decoration: none;
 }
 
-div.slides {
-  text-align: center; 
-  display: block;
+a:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
+.header {
+  font-family: Georgia, "Times New Roman", serif;
+  background-color: #b61e23;
+  height: auto;
+  width: 100%;
+  max-width: none;
+}
+
+.title-container, .logo-container {
+  width: 65%;
+  min-width: 480px;
   margin: 0 auto;
 }
+
+.title-container {
+  padding: 0 0 15px 0;
+}
+
+
+#miami-logo {
+  max-width: 100%;
+  height: auto;
+  margin: 5px 0;
+}
+
+.title {
+  color:white;
+  font-weight: normal;
+  margin: 0;
+}
+.subtitle {
+  color:white;
+  font-weight: normal;
+  font-size:20px;
+  margin: 0;
+}
+
+.search-container {
+  margin: 5px auto;
+  width: 65%;
+  min-width: 480px;
+  height: 25px;
+}
+
+.search-form {
+  float:right;
+}
+
+.advanced-search {
+  background-color: white;
+  width:65%;
+  min-width: 480px;
+  margin: 5px auto;
+  padding: 10px 0;
+}
+
+.advanced-search-label {
+  font-family: Georgia, "Times New Roman", serif;
+  width: 85%;
+  margin: auto;
+  text-align:center;
+  color: #b61e23;
+  font-size: 20px;
+  border-bottom: 2px dotted #cccccc;
+  padding: 5px 0;
+}
+
+.advanced-search-options {
+  display:flex;
+  list-style: none;
+  width: 85%;
+  align-items: stretch; /* Default */
+  justify-content: space-between;
+  margin: 5px auto;
+  padding: 5px 0;
+}
+.advanced-search-options .option {
+  display: block;
+  flex: 0 1 auto; /* Default */
+}
+
+.advanced-search-submit-container {
+  width: 85%;
+  margin: 5px auto;
+  height: 25px;
+}
+
+#advanced-search-submit {
+  float:right;
+}
+
+#slides {
+  width: 65%;
+  min-width: 480px;
+  margin: 0 auto;
+}
+
+.slick-track {
+  width: inherit;
+}
+.slide {
+  width: inherit;
+  background-color: white;
+  height: 700px;
+}
+.project-image-container {
+  height: 500px;
+  margin: 10px auto;
+}
+.project-image {
+  height:100%;
+  margin: 25px auto 5px;
+}
+
+
+.project-details-container {
+  height: 200px;
+}
+.project-title {
+  margin: 0 auto;
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.project-details {
+  text-align: center;
+}
+
+
+
+
+.white-button {
+  text-align: center;
+  background-color: #FFF;
+  color: #b61e23;
+  border: 2px solid #b61e23;
+  padding: 2px 4px;
+}
+.white-button:hover {
+  text-decoration: underline;
+  cursor:pointer;
+}
+
+/* OLD STUFF BELOW THIS LINE */
+
+
+
 
 div.description {
   text-align: center;
