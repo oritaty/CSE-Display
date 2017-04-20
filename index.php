@@ -37,8 +37,12 @@ $projectDb->closeConnection();
         <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
         <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
         <script type="text/javascript" src="slick/slick.js"></script> -->
-        <link rel="stylesheet" href="idxstylesheet.css?2017219">
-        <title>Prototype of prototype</title>
+
+        <!-- THIS IS THE MAIN STYLESHEET -->
+        <link rel="stylesheet" href="idxstylesheet.css">
+
+
+        <title>CEC Research Display - Miami University</title>
     </head>
     <body>
         <script>
@@ -62,16 +66,120 @@ $projectDb->closeConnection();
         }
         </script>
         <a href="index.php"><u>Home</u></a>
+
+        <!-- HEADER -->
         <div class="header">
-            <h1 class="header">CEC Display Project</h1>
+            <div class="logo-container">
+                <img id="miami-logo" src="img/siteLogo.png"/>
+            </div>
+
+            <div class="title-container">
+                <h1 class="title">College of Engineering and Computing</h1>
+                <div class="subtitle">Senior Capstone Projects</div>
+            </div>
         </div>
-        <div class="searchbox">
-            <form method="post" action="search.php">
-              Search:
-              <input type="text" name="searchterm">
-              <input type="submit" value="Submit">
+
+        <div class="search-container">
+            <form class="search-form" method="post" action="search.php">
+                <span>Search:</span>
+                <input type="text" name="search-term">
+                <input id="search-submit" class="white-button" type="submit" value="Submit">
             </form>
         </div>
+
+
+        <div class="advanced-search">
+            <div class="advanced-search-label"><strong>Advanced Search</strong></div>
+            <ul class="advanced-search-options">
+
+                <li class="option">
+                    <span>Year:</span>
+                    <select name="year" form="advanced-search-submit">
+                        <?php
+                        echo '<option>All</option>';
+                        while($row = $years->fetch_assoc()) {
+                            echo '<option>'.$row['Year'].'</option>';
+                        }
+                        ?>
+                    </select>
+                </li>
+                <li class="option">
+                    <span>Student:</span>
+                        <select name="person" form="advanced-search-submit">
+                        <?php
+                        echo '<option>All</option>';
+                        while($row = $students->fetch_assoc()) {
+                            echo '<option>'.$row['Name'].'</option>';
+                        }
+                        ?>
+                    </select>
+                </li>
+                <li class="option">
+                    <span>Department:</span>
+                    <select name="department" form="advanced-search-submit">
+                        <?php
+                        echo '<option>All</option>';
+                        while($row = $departments->fetch_assoc()) {
+                            echo '<option>'.$row['Name'].'</option>';
+                        }
+                        ?>
+                    </select>
+                </li>
+                <li class="option">
+                    <span>Category:</span>
+                    <select name="category" form="advanced-search-submit">
+                        <?php
+                        echo '<option>All</option>';
+                        while($row = $categories->fetch_assoc()) {
+                            echo '<option>'.$row['Name'].'</option>';
+                        }
+                        ?>
+                    </select>
+                </li>
+            </ul>
+            <div class="advanced-search-submit-container">
+                 <form method="post" action="search.php" id="advanced-search-submit">
+                    <input class="white-button" id="advanced-search-submit-btn" type="submit" name="sub" value="Submit">
+                 </form>
+            </div>
+        </div>
+
+
+
+        <div id="slides">
+            <?php
+            while($row = $mostRecent->fetch_assoc()) {
+                echo '<div class = "slide">';
+                echo '<div class="project-image-container"><img class="project-image" src="pics/', $row['fileName'], '" alt="pics/', $row['fileName'],
+                '"/><br></div>';
+
+                echo '<div class="project-details-container">';
+                echo '<div class="project-title">'.$row['Title'].'</div>';
+                echo '<div class="project-details"> Department: ', $row['DName'], '<br>';
+
+                echo $row['Description'], '<br>';
+                echo 'Sub-category: ', $row['CName'], '<br><br>';
+
+                echo '<form action=', '"project.php"', ' method=', '"post"','><button class="white-button" type=',
+                '"submit"', ' name=', '"hello"', ' value=', $row['Id'], ' class=',
+                '"btn-link"','>Go to Project Page</button></form><br><br></div></div>';
+                echo '</div>'; // Close slide box
+            }
+            ?>
+        </div>
+
+
+
+
+
+
+
+
+        <!-- BELOW THIS LINE UNTOUCHED BY CSS REDESIGN -->
+
+
+
+
         <h6 style="margin-top:-0.5cm;margin-bottom:-0.01cm">Latest/Popular</h6>
         <script type="text/javascript">
             function myFunction() {
@@ -118,91 +226,29 @@ $projectDb->closeConnection();
             <input name="checkbox" onclick="myFunction()" type="checkbox" id="checkbox"/>
             <div class="slider round"></div>
         </label>
+
         <div id="slides">
             <?php
             while($row = $mostRecent->fetch_assoc()) {
-                echo '<div><center><img src="pics/', $row['fileName'], '" alt="pics/', $row['fileName'], 
-                        '" style="width:auto;height:350px;margin-top:1cm" /><br>';
-                echo "<h2>".$row['Title']."</h2>";
-                echo 'Department: ', $row['DName'], '<br>';
-                //echo 'Start date: ', $row['Year'], '<br>';
+                echo '<div class = "slide">';
+                echo '<div class="project-image-container"><img class="project-image" src="pics/', $row['fileName'], '" alt="pics/', $row['fileName'],
+                '"/><br></div>';
+
+                echo '<div class="project-details-container">';
+                echo '<div class="project-title">'.$row['Title'].'</div>';
+                echo '<div class="project-details"> Department: ', $row['DName'], '<br>';
+
                 echo $row['Description'], '<br>';
                 echo 'Sub-category: ', $row['CName'], '<br><br>';
-                //echo 'Total access: ', $row['AccessCount'], '<br>';
-                echo "<form action=", '"project.php"', "method=", '"post"', "><button type=", 
-                        '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=", 
-                        '"btn-link"', ">Click here for more details.</button></form></center><br><br></div>";
+
+                echo '<form action=', '"project.php"', ' method=', '"post"','><button type=',
+                '"submit"', ' name=', '"hello"', ' value=', $row['Id'], ' class=',
+                '"btn-link"','>Click here for more details.</button></form><br><br></div></div>';
+                echo '</div>'; // Close slide box
             }
             ?>
         </div>
-        <div class="searchtab">
-            <h4 style="margin-top:0.1cm;margin-bottom:-0.0cm;">Search by Date</h4>
-            <I>Year:</I>
-            <select name="year" form="tab">
-              <?php
-              echo '<option>All</option>';
-              while($row = $years->fetch_assoc()) {
-                  echo '<option>'.$row['Year'].'</option>';
-              }
-              ?>
-            </select>
-            <I>Month:</I>
-            <select name="month" form="tab">
-              <option>All</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
-              <option>11</option>
-              <option>12</option>
-            </select>
-            <hr>
-            <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-                Search by Person</h4>
-            <I>Name:</I>
-            <select name="person" form="tab">
-              <?php
-              echo '<option>All</option>';
-              while($row = $students->fetch_assoc()) {
-                  echo '<option>'.$row['Name'].' ('.$row['MiamiId'].')</option>';
-              }
-              ?>
-            </select>
-            <hr>
-            <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-                Search by Sub-category</h4>
-            <I>Category:</I>
-            <select name="subcategory" form="tab">
-              <?php
-              echo '<option>All</option>';
-              while($row = $categories->fetch_assoc()) {
-                  echo '<option>'.$row['Name'].'</option>';
-              }
-              ?>
-            </select>
-            <hr>
-            <h4 style="margin-top:-0.0cm;margin-bottom:-0.0cm;">
-                Search by Department</h4>
-            <I>Department:</I>
-            <select name="department" form="tab">
-              <?php
-              echo '<option>All</option>';
-              while($row = $departments->fetch_assoc()) {
-                  echo '<option>'.$row['Name'].'</option>';
-              }
-              ?>
-            </select>
-            <hr>
-            <form method="post" action="search.php" id="tab">
-                <input type="submit" name="sub" value="Search" style="">
-            </form>
-        </div>
+
         <div class="description">
         </div>
         <div class="bottom_space" style="height:100px"></div>
