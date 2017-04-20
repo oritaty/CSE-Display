@@ -100,13 +100,16 @@ $students = $projectDb->getStudents();
     <?php
     $sql = "SELECT Project.Id, Project.Title, Project.Year, Project.AccessCount, 
                    Project.Description, Category.Name AS CName, 
-                   Department.Name AS DName, Artifact.fileName
+                   Department.Name AS DName, Artifact.fileName, 
+                   User.Name, User.MiamiId
             FROM Project JOIN Category ON Project.CategoryId = Category.Id
                          JOIN ProjectDepartment ON Project.Id = ProjectDepartment.ProjectId
                          JOIN Department ON ProjectDepartment.DepartmentId = Department.Id
                          JOIN ProjectArtifact ON Project.Id = ProjectArtifact.ProjectId
                          JOIN Artifact ON ProjectArtifact.ArtifactId = Artifact.Id
                          JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
+                         JOIN ProjectStudent ON ProjectStudent.ProjectId = Project.Id
+                         JOIN User ON User.Id = ProjectStudent.StudentId
             WHERE ArtifactType.Name = 'IMAGE'";
     $toBeDisplayed = false;
 
@@ -134,7 +137,12 @@ $students = $projectDb->getStudents();
             $sql = $sql."\nAND Department.Name = '".$department."'";
         }
         if ($person != "All" && strpos($person, " (")) {
-            //$tok = explode(" (", $person);
+            // Format: "Name (UniqueId)" 
+            $tokens = explode(" (", $person);
+            $name = $tokens[0];
+            $uniqueId = substr($tokens[1], 0, -1);
+            $sql .= "\nAND (User.Name = '".$name.
+                    "' OR User.MiamiId = '".$uniqueId."')";
         }
         $toBeDisplayed = true;
     }
