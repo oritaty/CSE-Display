@@ -19,6 +19,20 @@ $years = $projectDb->getYears();
 $departments = $projectDb->getDepartments();
 $categories = $projectDb->getCategories();
 $students = $projectDb->getStudents();
+
+/*
+ To enable GROUP BY clause, sql_mode must be set as...
+ SET sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+*/
+
+/* 
+ Check sql_mode...
+ $sql2 = "SELECT @@sql_mode AS Mode";
+ $status = $projectDb->getQueryResult($sql2);
+ $row = $status->fetch_assoc();
+ echo $row['Mode'];
+*/
+
 $projectDb->closeConnection();
 ?>
 <!DOCTYPE html>

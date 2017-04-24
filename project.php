@@ -53,7 +53,7 @@ if ($toBeDisplayed) {
                         Project.Id = ProjectArtifact.ProjectId AND
                         ProjectArtifact.ArtifactId = Artifact.Id AND
                         Artifact.TypeId = ArtifactType.Id";
-    $sqlPics = $sqlCommon."\nAND ArtifactType.Name = 'IMAGE'\nGROUP BY Project.Id";
+    $sqlPics = $sqlCommon."\nAND ArtifactType.Name = 'IMAGE'"; // No need to use GROUP BY here.
     $sqlVideos = $sqlCommon."\nAND (ArtifactType.Name = 'VIDEO_FILE' OR
                               ArtifactType.Name = 'VIDEO_LINK')\nGROUP BY Project.Id";
     $sqlReports = $sqlCommon."\nAND (ArtifactType.Name = 'PDF' OR
