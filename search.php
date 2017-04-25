@@ -19,7 +19,7 @@ $students = $projectDb->getStudents();
 <!-- HEADER -->
 <div class="header">
     <div class="logo-container">
-        <img id="miami-logo" src="img/siteLogo.png"/>
+        <img id="miami-logo" src="logos/siteLogo.png"/>
     </div>
 
     <div class="title-container">
@@ -179,7 +179,7 @@ $students = $projectDb->getStudents();
                         '"submit"', "name=", '"hello"', "value=", $row['Id'], " class=",
                         '"btn-link"', ">Go to Project Page</button></form><br><br>";
                     }
-                }
+                } 
             }
             $projectDb->closeConnection();
             ?>

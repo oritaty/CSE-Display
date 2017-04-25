@@ -112,7 +112,7 @@ if ($toBeDisplayed) {
 <!-- HEADER -->
 <div class="header">
     <div class="logo-container">
-        <img id="miami-logo" src="img/siteLogo.png"/>
+        <img id="miami-logo" src="logos/siteLogo.png"/>
     </div>
 
     <div class="title-container">
