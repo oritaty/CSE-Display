@@ -120,8 +120,8 @@ $students = $projectDb->getStudents();
             WHERE ArtifactType.Name = 'IMAGE'";
             $toBeDisplayed = false;
 
-            if (filter_input(INPUT_POST, 'searchterm') != NULL && filter_input(INPUT_POST, 'searchterm') != '') {
-                $key = filter_input(INPUT_POST, 'searchterm');
+            if (filter_input(INPUT_POST, 'search-term') != NULL && filter_input(INPUT_POST, 'search-term') != '') {
+                $key = filter_input(INPUT_POST, 'search-term');
                 $sql = $sql . "\nAND Project.Title LIKE '%" . $key . "%'";
                 $toBeDisplayed = true;
             } else if (isset($_POST['sub'])) {

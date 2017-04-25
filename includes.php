@@ -87,7 +87,7 @@ class ProjectDb {
             FROM User, UserType 
             WHERE User.UserTypeId = UserType.Id AND User.Name <> '' AND 
                   User.Name IS NOT NULL AND User.MiamiId <> '' AND 
-                  User.MiamiId IS NOT NULL AND UserType.Name <> 'Admin'";
+                  User.MiamiId IS NOT NULL AND UserType.Name <> 'Advisor'";
         return $this->getQueryResult($sql);
     }
     

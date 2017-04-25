@@ -39,7 +39,8 @@ $projectDb->closeConnection();
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/lib/w3.css">
+    <link rel="stylesheet" type="text/css" href="/lib/w3.css">
+    <!--<link rel="stylesheet" type="text/css" href="https://www.w3schools.com/w3css/3/w3.css">-->
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <!-- Copyright 2017 https://github.com/kenwheeler/slick -->
