@@ -1,289 +1,320 @@
 
 body {
-  background: url(http://www.miamioh.edu/_files/images/schools/backgrounds/bg.jpg) top left repeat !important;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  margin: 0;
+    background: url(http://www.miamioh.edu/_files/images/schools/backgrounds/bg.jpg) top left repeat !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
 }
 
 select:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 a {
-  color: #007b89;
-  text-decoration: none;
+    color: #007b89;
+    text-decoration: none;
 }
 
 a:hover {
-  cursor: pointer;
-  text-decoration: underline;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
-
 .header {
-  font-family: Georgia, "Times New Roman", serif;
-  background-color: #b61e23;
-  height: auto;
-  width: 100%;
-  max-width: none;
+    font-family: Georgia, "Times New Roman", serif;
+    background-color: #b61e23;
+    height: auto;
+    width: 100%;
+    max-width: none;
 }
 
 .title-container, .logo-container {
-  width: 65%;
-  min-width: 480px;
-  margin: 0 auto;
+    width: 65%;
+    min-width: 480px;
+    margin: 0 auto;
 }
 
 .title-container {
-  padding: 0 0 15px 0;
+    padding: 0 0 15px 0;
 }
 
-
 #miami-logo {
-  max-width: 100%;
-  height: auto;
-  margin: 5px 0;
+    max-width: 100%;
+    height: auto;
+    margin: 5px 0;
 }
 
 .title {
-  color:white;
-  font-weight: normal;
-  margin: 0;
+    color: white;
+    font-weight: normal;
+    margin: 0;
 }
+
 .subtitle {
-  color:white;
-  font-weight: normal;
-  font-size:20px;
-  margin: 0;
+    color: white;
+    font-weight: normal;
+    font-size: 20px;
+    margin: 0;
+}
+
+.main {
+    width: 65%;
+    min-width: 480px;
+    margin: 5px auto;
+    background-color: white;
+}
+
+.main-content {
+    width: 85%;
+    margin: 0 auto;
 }
 
 .search-container {
-  margin: 5px auto;
-  width: 65%;
-  min-width: 480px;
-  height: 25px;
+    height: 25px;
+    padding: 10px 0;
 }
 
 .search-form {
-  float:right;
+    float: right;
 }
 
 .advanced-search {
-  background-color: white;
-  width:65%;
-  min-width: 480px;
-  margin: 5px auto;
-  padding: 10px 0;
+    background-color: white;
+    margin: 5px auto;
+    padding: 10px 0;
 }
 
 .advanced-search-label {
-  font-family: Georgia, "Times New Roman", serif;
-  width: 85%;
-  margin: auto;
-  text-align:center;
-  color: #b61e23;
-  font-size: 20px;
-  border-bottom: 2px dotted #cccccc;
-  padding: 5px 0;
+    font-family: Georgia, "Times New Roman", serif;
+    text-align: center;
+    color: #b61e23;
+    font-size: 20px;
+    border-bottom: 2px dotted #cccccc;
+    padding: 5px 0;
 }
 
-.advanced-search-options {
-  display:flex;
-  list-style: none;
-  width: 85%;
-  align-items: stretch; /* Default */
-  justify-content: space-between;
-  margin: 5px auto;
-  padding: 5px 0;
+.advanced-search-options, .recommendation-buttons, .media-buttons {
+    display: flex;
+    list-style: none;
+    align-items: stretch; /* Default */
+    justify-content: space-between;
+    margin: 5px auto;
+    padding: 5px 0;
 }
-.advanced-search-options .option {
-  display: block;
-  flex: 0 1 auto; /* Default */
+
+.advanced-search-options .option, .recommendation-buttons .recommendation-button, .media-buttons .media-button{
+    display: block;
+    flex: 0 1 auto; /* Default */
 }
 
 .advanced-search-submit-container {
-  width: 85%;
-  margin: 5px auto;
-  height: 25px;
+    height: 25px;
 }
 
 #advanced-search-submit {
-  float:right;
+    float: right;
 }
 
 #slides {
-  width: 65%;
-  min-width: 480px;
-  margin: 0 auto;
+    margin: 0 auto;
+    margin-bottom: 50px;
 }
 
 .slick-track {
-  width: inherit;
-}
-.slide {
-  width: inherit;
-  background-color: white;
-  height: 700px;
-}
-.project-image-container {
-  height: 500px;
-  margin: 10px auto;
-}
-.project-image {
-  height:100%;
-  margin: 25px auto 5px;
+    width: inherit;
 }
 
+.slide {
+    width: inherit;
+    background-color: white;
+    height: 700px;
+}
+
+.project-image-container {
+    height: 500px;
+    margin: 10px auto;
+}
+
+.project-image {
+    height: 100%;
+    margin: 25px auto 5px;
+}
 
 .project-details-container {
-  height: 200px;
+    border-top: 2px dotted #cccccc;
+    margin: 10px auto;
+    height: 200px;
+    width: 85%;
+    padding: 5px;
+    text-align: center;
 }
+
 .project-title {
-  margin: 0 auto;
-  text-align: center;
-  font-weight: bold;
-  font-size: 25px;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
 }
 
 .project-details {
-  text-align: center;
+    text-align: center;
 }
-
-
-
 
 .white-button {
-  text-align: center;
-  background-color: #FFF;
-  color: #b61e23;
-  border: 2px solid #b61e23;
-  padding: 2px 4px;
+    text-align: center;
+    background-color: #FFF;
+    color: #b61e23;
+    border: 2px solid #b61e23;
+    padding: 2px 4px;
 }
+
 .white-button:hover {
-  text-decoration: underline;
-  cursor:pointer;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.spacer {
+    border-top: 2px solid #b61e23;
+    border-bottom: 1px solid #b61e23;
+    height: 2px;
+    margin: 0 auto;
+}
+
+.footer {
+    background-color: white;
+    text-align: center;
+    width: 65%;
+    margin: 5px auto;
+    padding: 10px 0;
 }
 
 /* OLD STUFF BELOW THIS LINE */
 
-
-
-
 div.description {
-  text-align: center;
-  /* Added for experiments. */
-  /* border: 1px solid black;
-  border-collapse: collapse; */
+    text-align: center;
+    /* Added for experiments. */
+    /* border: 1px solid black;
+    border-collapse: collapse; */
 }
 
 /* Toggle switch: borrowed from w3 schook(http://www.w3schools.com/howto/howto_css_switch.asp)*/
 /* The switch - the box around the slider */
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+    position: relative;
+    display:inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch-label{
+    margin: 5px 0;
+    padding: 0;
 }
 
 /* Hide default HTML checkbox */
 .switch input {
-  display:none;
+    display: none;
 }
 
 /* The slider */
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+    cursor: pointer;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+
+    content: "";
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+    background-color: #b61e23;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #2196F3;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
 }
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+    border-radius: 34px;
 }
 
 .slider.round:before {
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
-.footer {
-  position: fixed;
-  background-color: darkgrey;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  text-align: center;
-}
 
 /** search.php **/
 .searchresults {
-  text-align: center;
-  margin-top: 2cm;
+    text-align: center;
+
+}
+.search-results-title {
+    font-family: Georgia, "Times New Roman", serif;
+    text-align: center;
+    color: #b61e23;
+    font-size: 20px;
+    padding: 5px 0;
+}
+.search-result-image {
+    max-height: 300px;
+    width: auto;
+}
+.search-result-image img {
+    height: 200px;
+    width: auto;
 }
 
 /** project_pg.php **/
-.media_buttons {
-  text-align: center;
-  margin-top: 2cm;
-  margin-bottom: 1cm;
+.media-buttons-container {
+    text-align: center;
+    width: 85%;
+    border-bottom: 2px dotted #cccccc;
+    margin: auto;
+    padding: 5px 0;
 }
 
 .project_artifacts {
-  text-align: center;
+    text-align: center;
+    margin: 10px auto;
 }
 
-.project_description {
-  text-align: center;
+.project_details {
+    text-align: center;
+    margin: 10px auto;
 }
 
-.recommendations {
-  text-align: center;
+.recommendation-container {
+    text-align: center;
+    width: 85%;
+    border-top: 2px dotted #cccccc;
+    margin: auto;
+    padding: 5px 0;
 }
 
 .slick-prev {
-  left: 300px !important;
-  background: lightgray; /*to notice it, is white*/
-  height: 150px;
-}
-.slick-next {
-  right: 300px !important;
-  background: lightgray; /*to notice it, is white*/
-  height: 150px;
+    background: lightgray; /*to notice it, is white*/
+    height: 150px;
 }
 
-.slick-prev:before, .slick-next:before{
-  color: black;
-  /*left: -80px;*/
+.slick-next {
+    background: lightgray; /*to notice it, is white*/
+    height: 150px;
+}
+
+.slick-prev:before, .slick-next:before {
+    color: black;
+    /*left: -80px;*/
 }

@@ -1,4 +1,4 @@
-<?php include 'includes.php'?>
+<?php include 'includes.php' ?>
 <?php
 $sql1 = "SELECT Project.Id, Project.Title, Project.Year,
                          Project.AccessCount, Project.Description, 
@@ -37,62 +37,64 @@ $projectDb->closeConnection();
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="/lib/w3.css">
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-        <!-- Copyright 2017 https://github.com/kenwheeler/slick -->
-        <!-- Get the source files from web.-->
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
-        <!-- Get the source files from internal link
-        <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-        <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-        <script type="text/javascript" src="slick/slick.js"></script> -->
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/lib/w3.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <!-- Copyright 2017 https://github.com/kenwheeler/slick -->
+    <!-- Get the source files from web.-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+    <!-- Get the source files from internal link
+    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+    <script type="text/javascript" src="slick/slick.js"></script> -->
 
-        <!-- THIS IS THE MAIN STYLESHEET -->
-        <link rel="stylesheet" href="idxstylesheet.css">
+    <!-- THIS IS THE MAIN STYLESHEET -->
+    <link rel="stylesheet" href="idxstylesheet.css">
 
 
-        <title>CEC Research Display - Miami University</title>
-    </head>
-    <body>
-        <script>
-        var counter = 1;
+    <title>CEC Research Display - Miami University</title>
+</head>
+<body>
+<script>
+    var counter = 1;
 
-        function removeSlick() {
-            $('#slides').slick('unslick');
-        }
+    function removeSlick() {
+        $('#slides').slick('unslick');
+    }
 
-        function addSlick() {
-            $('#slides').slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 5000,
-                dots: true,
-                arrows: false,
-                pauseOnHover: false,
-                respondTo: 'slider'
-            });
-        }
-        </script>
-        <a href="index.php"><u>Home</u></a>
+    function addSlick() {
+        $('#slides').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 5000,
+            dots: true,
+            arrows: false,
+            pauseOnHover: false,
+            respondTo: 'slider'
+        });
+    }
+</script>
+<a href="index.php"><u>Home</u></a>
 
-        <!-- HEADER -->
-        <div class="header">
-            <div class="logo-container">
-                <img id="miami-logo" src="img/siteLogo.png"/>
-            </div>
+<!-- HEADER -->
+<div class="header">
+    <div class="logo-container">
+        <img id="miami-logo" src="img/siteLogo.png"/>
+    </div>
 
-            <div class="title-container">
-                <h1 class="title">College of Engineering and Computing</h1>
-                <div class="subtitle">Senior Capstone Projects</div>
-            </div>
-        </div>
+    <div class="title-container">
+        <h1 class="title">College of Engineering and Computing</h1>
+        <div class="subtitle">Senior Capstone Projects</div>
+    </div>
+</div>
 
+<div class="main">
+    <div class="main-content">
         <div class="search-container">
             <form class="search-form" method="post" action="search.php">
                 <span>Search:</span>
@@ -111,19 +113,19 @@ $projectDb->closeConnection();
                     <select name="year" form="advanced-search-submit">
                         <?php
                         echo '<option>All</option>';
-                        while($row = $years->fetch_assoc()) {
-                            echo '<option>'.$row['Year'].'</option>';
+                        while ($row = $years->fetch_assoc()) {
+                            echo '<option>' . $row['Year'] . '</option>';
                         }
                         ?>
                     </select>
                 </li>
                 <li class="option">
                     <span>Student:</span>
-                        <select name="person" form="advanced-search-submit">
+                    <select name="person" form="advanced-search-submit">
                         <?php
                         echo '<option>All</option>';
-                        while($row = $students->fetch_assoc()) {
-                            echo '<option>'.$row['Name'].'</option>';
+                        while ($row = $students->fetch_assoc()) {
+                            echo '<option>' . $row['Name'] . '</option>';
                         }
                         ?>
                     </select>
@@ -133,8 +135,8 @@ $projectDb->closeConnection();
                     <select name="department" form="advanced-search-submit">
                         <?php
                         echo '<option>All</option>';
-                        while($row = $departments->fetch_assoc()) {
-                            echo '<option>'.$row['Name'].'</option>';
+                        while ($row = $departments->fetch_assoc()) {
+                            echo '<option>' . $row['Name'] . '</option>';
                         }
                         ?>
                     </select>
@@ -144,86 +146,53 @@ $projectDb->closeConnection();
                     <select name="category" form="advanced-search-submit">
                         <?php
                         echo '<option>All</option>';
-                        while($row = $categories->fetch_assoc()) {
-                            echo '<option>'.$row['Name'].'</option>';
+                        while ($row = $categories->fetch_assoc()) {
+                            echo '<option>' . $row['Name'] . '</option>';
                         }
                         ?>
                     </select>
                 </li>
             </ul>
             <div class="advanced-search-submit-container">
-                 <form method="post" action="search.php" id="advanced-search-submit">
+                <form method="post" action="search.php" id="advanced-search-submit">
                     <input class="white-button" id="advanced-search-submit-btn" type="submit" name="sub" value="Submit">
-                 </form>
+                </form>
             </div>
         </div>
 
+        <div class="spacer"></div>
 
 
-        <div id="slides">
-            <?php
-            while($row = $mostRecent->fetch_assoc()) {
-                echo '<div class = "slide">';
-                echo '<div class="project-image-container"><img class="project-image" src="pics/', $row['fileName'], '" alt="pics/', $row['fileName'],
-                '"/><br></div>';
-
-                echo '<div class="project-details-container">';
-                echo '<div class="project-title">'.$row['Title'].'</div>';
-                echo '<div class="project-details"> Department: ', $row['DName'], '<br>';
-
-                echo $row['Description'], '<br>';
-                echo 'Sub-category: ', $row['CName'], '<br><br>';
-
-                echo '<form action=', '"project.php"', ' method=', '"post"','><button class="white-button" type=',
-                '"submit"', ' name=', '"hello"', ' value=', $row['Id'], ' class=',
-                '"btn-link"','>Go to Project Page</button></form><br><br></div></div>';
-                echo '</div>'; // Close slide box
-            }
-            ?>
-        </div>
-
-
-
-
-
-
-
-
-        <!-- BELOW THIS LINE UNTOUCHED BY CSS REDESIGN -->
-
-
-
-
-        <h6 style="margin-top:-0.5cm;margin-bottom:-0.01cm">Latest/Popular</h6>
+        <h6 class="switch-label">Latest/Popular</h6>
         <script type="text/javascript">
             function myFunction() {
                 var send;
                 if (counter % 2 === 0) {
                     send = 'popular';
                 } else {
-                    send = 'recent'; 
+                    send = 'recent';
                 }
 
                 var xmlhttp;
                 try {
                     // Chrome, Firefox, Safari etc.
                     xmlhttp = new XMLHttpRequest();
-                } catch(e) {
+                } catch (e) {
                     try {
                         // IE.
                         xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-                    } catch(e) {
+                    } catch (e) {
                         try {
                             // IE.
                             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                        } catch(e) {
+                        } catch (e) {
                             alert("Something is wrong.");
                         }
                     }
                 }
                 // var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function(){
-                    if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                         counter++;
                         // alert(counter);
                         // alert(xmlhttp.responseText);
@@ -243,39 +212,38 @@ $projectDb->closeConnection();
 
         <div id="slides">
             <?php
-            while($row = $mostRecent->fetch_assoc()) {
+            while ($row = $mostRecent->fetch_assoc()) {
                 echo '<div class = "slide">';
                 echo '<div class="project-image-container"><img class="project-image" src="pics/', $row['fileName'], '" alt="pics/', $row['fileName'],
                 '"/><br></div>';
-
+               // echo '<div class="spacer"></div>';
                 echo '<div class="project-details-container">';
-                echo '<div class="project-title">'.$row['Title'].'</div>';
+                echo '<div class="project-title">' . $row['Title'] . '</div>';
                 echo '<div class="project-details"> Department: ', $row['DName'], '<br>';
 
                 echo $row['Description'], '<br>';
                 echo 'Sub-category: ', $row['CName'], '<br><br>';
 
-                echo '<form action=', '"project.php"', ' method=', '"post"','><button type=',
+                echo '<form action=', '"project.php"', ' method=', '"post"', '><button class="white-button" type=',
                 '"submit"', ' name=', '"hello"', ' value=', $row['Id'], ' class=',
-                '"btn-link"','>Click here for more details.</button></form><br><br></div></div>';
+                '"btn-link"', '>Go to Project Page</button></form><br><br></div></div>';
                 echo '</div>'; // Close slide box
             }
             ?>
         </div>
+        <div class="spacer"></div>
+    </div>
 
-        <div class="description">
-        </div>
-        <div class="bottom_space" style="height:100px"></div>
-        <div class="footer">
-        <h3>Check out the link below for more details about the College of Engineering and Computing!</h3>
-        CEC Webpage:
-        <a href="http://miamioh.edu/cec/">
-        http://miamioh.edu/cec/</a>
-        </div>
-        <script>
-        $(document).ready(function() {
-            addSlick();
-        });
-        </script>
-    </body>
+    <div class="footer">
+        <div>Check out the <a href="http://miamioh.edu/cec/">CEC Webpage</a> for more details about the College of Engineering and Computing!</div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        addSlick();
+    });
+</script>
+</body>
 </html>
