@@ -107,7 +107,7 @@ $students = $projectDb->getStudents();
             $sql = "SELECT Project.Id, Project.Title, Project.Year, Project.AccessCount, 
                    Project.Description, Category.Name AS CName, 
                    Department.Name AS DName, Artifact.fileName, 
-                   User.Name, User.MiamiId, Semester.Name
+                   User.Name, Semester.Name
             FROM Project JOIN Category ON Project.CategoryId = Category.Id
                          JOIN ProjectDepartment ON Project.Id = ProjectDepartment.ProjectId
                          JOIN Department ON ProjectDepartment.DepartmentId = Department.Id
@@ -144,6 +144,7 @@ $students = $projectDb->getStudents();
                 if ($department != "All") {
                     $sql = $sql . "\nAND Department.Name = '" . $department . "'";
                 }
+                /*
                 if ($person != "All" && strpos($person, " (")) {
                     // Format: "Name (UniqueId)"
                     $tokens = explode(" (", $person);
@@ -151,6 +152,10 @@ $students = $projectDb->getStudents();
                     $uniqueId = substr($tokens[1], 0, -1);
                     $sql .= "\nAND (User.Name = '" . $name .
                         "' OR User.MiamiId = '" . $uniqueId . "')";
+                }
+                */
+                if ($person != "All") {
+                    $sql .= "\nAND User.Name = '" . $person . "'";
                 }
                 $toBeDisplayed = true;
             }
