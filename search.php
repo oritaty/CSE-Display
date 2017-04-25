@@ -153,7 +153,8 @@ $students = $projectDb->getStudents();
                 $result = $projectDb->getQueryResult($sql);
                 if ($result != NULL) {
                     while ($row = $result->fetch_assoc()) {
-                        echo '<img class="search-result-image" src="pics/', $row['fileName'], '" alt=""/>';
+                        echo '<img class="search-result-image" src="pics/', $row['fileName'], '" alt=""'
+                                . 'style="width:auto;height:180px"/>';
                         echo '<br>';
 
 
