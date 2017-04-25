@@ -50,7 +50,8 @@ $students = $projectDb->getStudents();
                         <?php
                         echo '<option>All</option>';
                         while ($row = $years->fetch_assoc()) {
-                            echo '<option>' . $row['Year'] . '</option>';
+                            echo '<option>'.$row['Year'].' - Spring</option>';
+                            echo '<option>'.$row['Year'].' - Fall</option>'; // Modified.
                         }
                         ?>
                     </select>
@@ -106,7 +107,7 @@ $students = $projectDb->getStudents();
             $sql = "SELECT Project.Id, Project.Title, Project.Year, Project.AccessCount, 
                    Project.Description, Category.Name AS CName, 
                    Department.Name AS DName, Artifact.fileName, 
-                   User.Name, User.MiamiId
+                   User.Name, User.MiamiId, Semester.Name
             FROM Project JOIN Category ON Project.CategoryId = Category.Id
                          JOIN ProjectDepartment ON Project.Id = ProjectDepartment.ProjectId
                          JOIN Department ON ProjectDepartment.DepartmentId = Department.Id
@@ -115,6 +116,7 @@ $students = $projectDb->getStudents();
                          JOIN ArtifactType ON Artifact.TypeId = ArtifactType.Id
                          JOIN ProjectStudent ON ProjectStudent.ProjectId = Project.Id
                          JOIN User ON User.Id = ProjectStudent.StudentId
+                         JOIN Semester ON Semester.Id = Project.SemesterId
             WHERE ArtifactType.Name = 'IMAGE'";
             $toBeDisplayed = false;
 
@@ -128,8 +130,13 @@ $students = $projectDb->getStudents();
                 $department = $_POST['department'];
                 $person = $_POST['person'];
 
-                if ($year != "All") {
-                    $sql = $sql . "\nAND YEAR(Year) = " . $year;
+                if ($year != "All" && strpos($year, " - ")) {
+                    // Format: "Year - Semrster"
+                    $tokens = explode(" - ", $year);
+                    $yr = $tokens[0];
+                    $smstr = $tokens[1];
+                    $sql = $sql . "\nAND YEAR(Year) = " . $yr .
+                        " AND Semester.Name = '" . $smstr . "'";
                 }
                 if ($subCategory != "All") {
                     $sql = $sql . "\nAND Category.Name = '" . $subCategory . "'";

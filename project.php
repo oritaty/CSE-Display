@@ -141,7 +141,8 @@ if ($toBeDisplayed) {
                         <?php
                         echo '<option>All</option>';
                         while ($row = $years->fetch_assoc()) {
-                            echo '<option>' . $row['Year'] . '</option>';
+                            echo '<option>'.$row['Year'].' - Spring</option>';
+                            echo '<option>'.$row['Year'].' - Fall</option>'; // Modified.
                         }
                         ?>
                     </select>

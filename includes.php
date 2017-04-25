@@ -12,7 +12,7 @@ class ProjectDb {
         $this->servername = 'localhost';
         $this->username = 'root';
         $this->password = '';
-        $this->dbname = 'ResearchDisplayDb';
+        $this->dbname = 'ResearchDisplayDbMod';
         $this->conn = new mysqli($this->servername, $this->username, 
                 $this->password, $this->dbname);
         if ($this->conn->connect_error) {
