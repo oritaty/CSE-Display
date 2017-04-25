@@ -46,9 +46,9 @@ while($row = $target->fetch_assoc()) {
     echo $row['Description'], '<br>';
     echo 'Sub-category: ', $row['CName'], '<br><br>';
 
-    echo '<form action=', '"project.php"', ' method=', '"post"','><button type=',
+    echo '<form action=', '"project.php"', ' method=', '"post"','><button class="white-button" type=',
     '"submit"', ' name=', '"hello"', ' value=', $row['Id'], ' class=',
-    '"btn-link"','>Click here for more details.</button></form><br><br></div></div>';
+    '"btn-link"','>Go to Project Page</button></form><br><br></div></div>';
     echo '</div>'; // Close slide box
 }
 ?>
