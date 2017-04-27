@@ -22,7 +22,7 @@ $students = $projectDb->getStudents();
 
 /*
  To enable GROUP BY clause, sql_mode must be set as...
- SET [global] sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+ SET sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 */
 
 /* 
@@ -39,9 +39,10 @@ $projectDb->closeConnection();
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/lib/w3.css">
+    <link rel="stylesheet" href="/lib/w3.css">
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <!-- Copyright 2017 https://github.com/kenwheeler/slick -->
     <!-- Get the source files from web.-->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
@@ -84,7 +85,7 @@ $projectDb->closeConnection();
 <!-- HEADER -->
 <div class="header">
     <div class="logo-container">
-        <img id="miami-logo" src="logos/siteLogo.png"/>
+        <img id="miami-logo" src="img/siteLogo.png"/>
     </div>
 
     <div class="title-container">
@@ -114,8 +115,7 @@ $projectDb->closeConnection();
                         <?php
                         echo '<option>All</option>';
                         while ($row = $years->fetch_assoc()) {
-                            echo '<option>'.$row['Year'].' - Spring</option>';
-                            echo '<option>'.$row['Year'].' - Fall</option>'; // Modified.
+                            echo '<option>' . $row['Year'] . '</option>';
                         }
                         ?>
                     </select>
@@ -163,8 +163,6 @@ $projectDb->closeConnection();
 
         <div class="spacer"></div>
 
-
-        <h6 class="switch-label">Latest/Popular</h6>
         <script type="text/javascript">
             function myFunction() {
                 var send;
@@ -206,11 +204,22 @@ $projectDb->closeConnection();
                 xmlhttp.send();
             }
         </script>
-        <label class="switch">
-            <input name="checkbox" onclick="myFunction()" type="checkbox" id="checkbox"/>
-            <div class="slider round"></div>
-        </label>
+        <div class="onoffswitch">
+            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+            <label class="onoffswitch-label" for="myonoffswitch" onclick="myFunction()">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+            </label>
+        </div>
 
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                if($('div').hasClass('last')){
+                    $('div').css('width', '100%');
+                }
+            });
+        </script>
         <div id="slides">
             <?php
             while ($row = $mostRecent->fetch_assoc()) {
