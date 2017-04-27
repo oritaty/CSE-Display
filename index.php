@@ -19,30 +19,26 @@ $years = $projectDb->getYears();
 $departments = $projectDb->getDepartments();
 $categories = $projectDb->getCategories();
 $students = $projectDb->getStudents();
-
 /*
  To enable GROUP BY clause, sql_mode must be set as...
- SET sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+ SET [global] sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 */
-
-/* 
+/*
  Check sql_mode...
  $sql2 = "SELECT @@sql_mode AS Mode";
  $status = $projectDb->getQueryResult($sql2);
  $row = $status->fetch_assoc();
  echo $row['Mode'];
 */
-
 $projectDb->closeConnection();
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/lib/w3.css">
+    <link rel="stylesheet" type="text/css" href="/lib/w3.css">
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <!-- Copyright 2017 https://github.com/kenwheeler/slick -->
     <!-- Get the source files from web.-->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
@@ -62,11 +58,9 @@ $projectDb->closeConnection();
 <body>
 <script>
     var counter = 1;
-
     function removeSlick() {
         $('#slides').slick('unslick');
     }
-
     function addSlick() {
         $('#slides').slick({
             slidesToShow: 1,
@@ -85,7 +79,7 @@ $projectDb->closeConnection();
 <!-- HEADER -->
 <div class="header">
     <div class="logo-container">
-        <img id="miami-logo" src="img/siteLogo.png"/>
+        <img id="miami-logo" src="logos/siteLogo.png"/>
     </div>
 
     <div class="title-container">
@@ -115,7 +109,8 @@ $projectDb->closeConnection();
                         <?php
                         echo '<option>All</option>';
                         while ($row = $years->fetch_assoc()) {
-                            echo '<option>' . $row['Year'] . '</option>';
+                            echo '<option>'.$row['Year'].' - Spring</option>';
+                            echo '<option>'.$row['Year'].' - Fall</option>'; // Modified.
                         }
                         ?>
                     </select>
@@ -171,7 +166,6 @@ $projectDb->closeConnection();
                 } else {
                     send = 'recent';
                 }
-
                 var xmlhttp;
                 try {
                     // Chrome, Firefox, Safari etc.
@@ -204,6 +198,7 @@ $projectDb->closeConnection();
                 xmlhttp.send();
             }
         </script>
+
         <div class="onoffswitch">
             <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
             <label class="onoffswitch-label" for="myonoffswitch" onclick="myFunction()">
@@ -213,27 +208,18 @@ $projectDb->closeConnection();
         </div>
 
 
-        <script type="text/javascript">
-            $(document).ready(function(){
-                if($('div').hasClass('last')){
-                    $('div').css('width', '100%');
-                }
-            });
-        </script>
         <div id="slides">
             <?php
             while ($row = $mostRecent->fetch_assoc()) {
                 echo '<div class = "slide">';
                 echo '<div class="project-image-container"><img class="project-image" src="pics/', $row['fileName'], '" alt="pics/', $row['fileName'],
                 '"/><br></div>';
-               // echo '<div class="spacer"></div>';
+                // echo '<div class="spacer"></div>';
                 echo '<div class="project-details-container">';
                 echo '<div class="project-title">' . $row['Title'] . '</div>';
                 echo '<div class="project-details"> Department: ', $row['DName'], '<br>';
-
                 echo $row['Description'], '<br>';
                 echo 'Sub-category: ', $row['CName'], '<br><br>';
-
                 echo '<form action=', '"project.php"', ' method=', '"post"', '><button class="white-button" type=',
                 '"submit"', ' name=', '"hello"', ' value=', $row['Id'], ' class=',
                 '"btn-link"', '>Go to Project Page</button></form><br><br></div></div>';
